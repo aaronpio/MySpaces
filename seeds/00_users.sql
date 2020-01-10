@@ -1,0 +1,22 @@
+INSERT INTO users (name, email, password) VALUES
+('Rand Ernest'      , 'randernest@gmail.com'      , 'password'),
+('Hugh Mah'         , 'hughmah@gmail.com'         , 'password'),
+('Rafael Sugih'     , 'rafaelsugih@gmail.com'     , 'password'),
+('Saiid Hillel'     , 'saiidhillel@gmail.com'     , 'password'),
+('Fay Robert'       , 'fayrobert@gmail.com'       , 'password'),
+('Ole Petr'         , 'olepetr@gmail.com'         , 'password'),
+('Hartmann Bertrand', 'hartmannbertrand@gmail.com', 'password'),
+('Susanne Gregor'   , 'susannegregor@gmail.com'   , 'password'),
+('Molly Isidore'    , 'mollyisidore@gmail.com'    , 'password'),
+('Cary Craig'       , 'carycraig@gmail.com'       , 'password'),
+('Andreas Jim'      , 'andreasjim@gmail.com'      , 'password'),
+('Sumitro Sundar'   , 'sumitrosundar@gmail.com'   , 'password'),
+('Darryl Brett'     , 'darrylbrett@gmail.com'     , 'password'),
+('Nathan Pantelis'  , 'nathanpantelis@gmail.com'  , 'password'),
+('Vassos Irfan'     , 'vassosirfan@gmail.com'     , 'password'),
+('Margaret Phiroze' , 'margaretphiroze@gmail.com' , 'password'),
+('Noemi Sanjay'     , 'noemisanjay@gmail.com'     , 'password'),
+('Manjeri Rudolf'   , 'manjerirudolf@gmail.com'   , 'password'),
+('Lorraine Clarissa', 'lorraineclarissa@gmail.com', 'password'),
+('Maurice Giles'    , 'mauricegiles@gmail.com'    , 'password');
+
