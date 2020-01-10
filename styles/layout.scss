@@ -2,8 +2,14 @@
 
 body {
   background-color: #EEE;
+  font-family: sans-serif;
 
   h1 {
     color: #244751;
   }
+}
+
+nav {
+  display: flex;
+  justify-content: space-around;
 }
