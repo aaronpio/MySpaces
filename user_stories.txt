@@ -1,0 +1,15 @@
+As a user, 
+  I want to be able to create a map of different locations,
+  so that I can share it with other people.
+ 
+As a user,
+  I want to be able to add locations to a map (mine or somebody else's),
+  so that I can contribute with my own knowledge.
+  
+As a user (registered or not),
+  I want to be able to see the maps others have created,
+  so that I can discover new interesting places.
+  
+As a user,
+  I want to be able update and delete my maps and locations,
+  so that I have control over my own data.
