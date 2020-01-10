@@ -3,8 +3,10 @@ html
   head
     title #{title}
     link(rel='stylesheet', href='/styles/layout.css')
+    link(rel='stylesheet', href='/vendor/normalize-4.1.1.css')
     meta(name="viewport" content="width=device-width, initial-scale=1")
   body
     main
       include header
-      block content
+      .content
+        block content

@@ -1,7 +1,4 @@
-// See: https://sass-lang.com/
-
 body {
-  background-color: #EEE;
   font-family: sans-serif;
 
   h1 {
@@ -10,6 +7,29 @@ body {
 }
 
 nav {
-  display: flex;
-  justify-content: space-around;
+  background-color: blue;
+  display: flex !important;
+  justify-content: stretch;
+  height: 56px;
+  align-items: center;
+  font-size: 20px;
+
+  * {
+    padding: 0 8px;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
+  #nav-browse {
+    margin-left: auto;
+    justify-self: end;
+  }
+}
+
+.content {
+  margin: 0 auto;
+  width: 80%;
 }
