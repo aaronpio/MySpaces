@@ -32,12 +32,46 @@ $(() => {
     accessToken: 'pk.eyJ1IjoiYWFyb25tYXBib3giLCJhIjoiY2swaTcxYzhiMGFjZjNjcDdhbTAwamdjdCJ9.VWSP7Q-2MxofHRFWUZFyQA'
   }).addTo(mymap)
 
+  const saveMapToDatabase = (map) => {
+    //db query
+  }
+
+  const saveLocationToDatabase = (location) => {
+    //db query
+  }
+
   const onMapClick = (e) => {
-    alert("You clicked the map at " + e.latlng);
+    const marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+
+    const htmlInjection = `
+    <section class=keep_marker>
+<h5>Want to keep this marker?</h5>
+  <h6>${e.latlng.lat}, ${e.latlng.lng}</h6>
+  <button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-danger">Danger</button>
+  </section>
+`
+
+    //marker.bindPopup("<b>new</b><br>yo").openPopup();
+
   }
 
   mymap.on('click', onMapClick);
 
 });
+
+{/* <section class="map-form">
+  <h5>Want to keep this marker?</h5>
+  <h6>latitude, longitude</h6>
+  <button type="button" class="btn btn-primary">Primary</button>
+  <button type="button" class="btn btn-danger">Danger</button>
+  <form id="tweetForm">
+    <textarea name="text" placeholder="What are you humming about?"></textarea>
+    <div>
+      <input type="submit" value="Tweet" />
+      <span class="counter">140</span>
+    </div>
+  </form>
+</section> */}
 
 
