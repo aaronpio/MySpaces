@@ -7,7 +7,7 @@
 
 const express = require("express");
 const router = express.Router();
-const { getUserById } = require("../lib/queries.js");
+const { getUserById, getAllUsers } = require("../lib/queries.js");
 const { getQueryResults } = require("../server");
 const { db } = require("../server");
 
@@ -23,5 +23,10 @@ router.get("/:id", (req, res) => {
     });
 });
 //-------------------------------------------
+
+router.get("/", (req, res) => {
+  const sql = getAllUsers();
+  getQueryResults(sql).then(users => res.json(users));
+});
 
 module.exports = router;
