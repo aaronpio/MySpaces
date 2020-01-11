@@ -51,6 +51,7 @@ const usersRoutes = require("./routes/users");
 // Note: Feel free to replace the example routes below with your own
 app.use("/users", usersRoutes);
 app.use("/maps", require("./routes/maps"));
+app.use("/create", require("./routes/create-map"));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -60,8 +61,8 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/mapTest", (req, res) => {
-  res.render("html_staging(delete later)");
+app.get("/create-map", (req, res) => {
+  res.render("create-map");
 });
 
 app.listen(PORT, () => {
