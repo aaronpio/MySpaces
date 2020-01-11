@@ -1,5 +1,9 @@
+@import "./_variables";
+
+
 body {
-  font-family: sans-serif;
+  font-family: $header-font;
+  background-color: $lighter-text-color;
 
   h1 {
     color: #244751;
@@ -13,6 +17,7 @@ nav {
   height: 56px;
   align-items: center;
   font-size: 20px;
+  padding: 16px 8px;
 
   * {
     padding: 0 8px;
@@ -29,7 +34,16 @@ nav {
   }
 }
 
-.content {
+body > * {
   margin: 0 auto;
   width: 80%;
+  padding: 20px;
+}
+
+main {
+  background-color: white;
+}
+
+.map-list-item {
+  padding-top: 8px;
 }
