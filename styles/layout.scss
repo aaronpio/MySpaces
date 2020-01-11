@@ -24,8 +24,16 @@ nav {
   }
 
   #nav-browse {
-    margin-left: auto;
+    margin-left: auto 0;
     justify-self: end;
+  }
+
+  #nav-create {
+    margin-left: auto;
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    flex-direction: column;
   }
 }
 
@@ -35,5 +43,6 @@ nav {
 }
 
 #mapid {
-  height: 180px;
+  height: 250px;
+  width: 500px;
 }
