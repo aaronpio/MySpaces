@@ -7,19 +7,12 @@
 
 const express = require("express");
 const router = express.Router();
+const { getMapById } = require("../lib/queries.js")
+const { getQueryResults } = require("../server")
 
-module.exports = db => {
-  router.get("/", (req, res) => {
-    let query = `SELECT * FROM maps`;
-    console.log(query);
-    db.query(query)
-      .then(data => {
-        const maps = data.rows;
-        res.json({ maps });
-      })
-      .catch(err => {
-        res.status(500).json({ error: err.message });
-      });
-  });
-  return router;
-};
+router.get("/:id", (req, res) => {
+  const sql = getMapById(req.params.id);
+  getQueryResults(sql).then(maps => res.json(maps));
+});
+
+module.exports = router;
