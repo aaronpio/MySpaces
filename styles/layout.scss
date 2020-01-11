@@ -1,6 +1,9 @@
+@import "./_variables";
+
+
 body {
-  font-family: sans-serif;
-  background-color: #eeeeee;
+  font-family: $header-font;
+  background-color: $lighter-text-color;
 
   h1 {
     color: #244751;
