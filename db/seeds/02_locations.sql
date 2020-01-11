@@ -30,7 +30,7 @@ INSERT INTO locations (title, description, image_url, longitude, latitude, map_i
   ('Prodisarmament rhipidoglossal', 'combining skatosine'      , 'https://unsplash.it/300/200?image=862', 70.436165, 70.992873, 14, 19),
   ('Ultimobranchial latchstring'  , 'dysprosia photosynthetic' , 'https://unsplash.it/300/200?image=112', 70.636738, 69.695189, 29, 7) ,
   ('Beeswinged Carchariidae'      , 'noncleistogamic medalist' , 'https://unsplash.it/300/200?image=512', 69.033882, 69.260819, 32, 16),
-  ('Scapethrift calicular'         'prosopopoeial nave'        , 'https://unsplash.it/300/200?image=882', 70.167356, 70.920026, 1 , 11),
+  ('Scapethrift calicular'        ,'prosopopoeial nave'        , 'https://unsplash.it/300/200?image=882', 70.167356, 70.920026, 1 , 11),
   ('Anargyros demonocracy'        , 'polytheistical larderlike', 'https://unsplash.it/300/200?image=885', 70.826829, 69.973449, 24, 7) ,
   ('Ureterectomy discoloration'   , 'brandyman lispund'        , 'https://unsplash.it/300/200?image=330', 69.14448 , 69.102072, 32, 15),
   ('Journal leitmotiv'            , 'nonpersecution calmingly' , 'https://unsplash.it/300/200?image=710', 69.885215, 70.773891, 3 , 4) ,
