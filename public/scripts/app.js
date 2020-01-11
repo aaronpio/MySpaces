@@ -1,3 +1,4 @@
+console.log("Hello Aaron");
 $(() => {
   $.ajax({
     method: "GET",
