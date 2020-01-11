@@ -46,12 +46,12 @@ exports.getQueryResults = async sql => {
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
-const mapsRoutes = require("./routes/maps");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes);
-app.use("/api/maps", mapsRoutes);
+app.use("/users", usersRoutes);
+app.use("/maps", require("./routes/maps"));
+app.use("/api", apiRoutes);
 // Note: mount other resources here, using the same pattern above
 
 // Home page

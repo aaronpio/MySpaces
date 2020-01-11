@@ -5,8 +5,7 @@ const { getQueryResults } = require("../server")
 
 router.get("/:id", (req, res) => {
   const sql = getMapById(req.params.id);
-  const maps = await getQueryResults(sql);
-  res.render('browse', { maps });
+  getQueryResults(sql).then(maps => res.json(maps));
 });
 
 module.exports = router;
