@@ -15,8 +15,8 @@ const { db } = require("../server");
 router.get("/:id", (req, res) => {
   db.query(getUserById(req.params.id))
     .then(data => {
-      const users = data.rows;
-      res.json({ users });
+      const user = data.rows[0];
+      res.json({ user });
     })
     .catch(err => {
       res.status(500).json({ error: err.message });
