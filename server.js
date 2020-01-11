@@ -61,6 +61,10 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+app.get("/mapTest", (req, res) => {
+  res.render("html_staging(delete later)");
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
