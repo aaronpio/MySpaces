@@ -1,12 +1,11 @@
-console.log("Hello Aaron");
 $(() => {
   $.ajax({
     method: "GET",
-    url: "/users"
-  }).done(users => {
-    for (user of users) {
+    url: "/maps"
+  }).done(maps => {
+    for (map of maps) {
       $("<div>")
-        .text(user.name)
+        .text(map.name)
         .appendTo($("body"));
     }
   });
