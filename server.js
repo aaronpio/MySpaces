@@ -16,6 +16,7 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
 
+exports.db = db;
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -35,11 +36,11 @@ app.use(
 );
 app.use(express.static("public"));
 
-
-exports.getQueryResults = async (sql) => {
-  return db.query(sql)
-           .then(res => res.rows)
-           .catch(err => console.log(err));
+exports.getQueryResults = async sql => {
+  return db
+    .query(sql)
+    .then(res => res.rows)
+    .catch(err => console.log(err));
 };
 
 // Separated Routes for each Resource
@@ -48,7 +49,7 @@ const usersRoutes = require("./routes/users");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/users", usersRoutes(db));
+app.use("/users", usersRoutes);
 app.use("/maps", require("./routes/maps"));
 app.use("/api", require("./routes/api"));
 // Note: mount other resources here, using the same pattern above
@@ -63,4 +64,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
-
