@@ -3,10 +3,6 @@ const router = express.Router();
 const { getMapById, getMaps } = require("../lib/queries.js");
 const { getQueryResults } = require("../server");
 
-router.get("/:id", async (req, res) => {
-  const sql = getMapById(req.params.id);
-  getQueryResults(sql).then(map => res.json(map));
-});
 
 router.get("/", async (req, res) => {
   const sql = getMaps();
@@ -15,6 +11,11 @@ router.get("/", async (req, res) => {
 
 router.get("/new", (req, res) => {
   res.render("create-map");
+});
+
+router.get("/:id", async (req, res) => {
+  const sql = getMapById(req.params.id);
+  getQueryResults(sql).then(map => res.json(map));
 });
 
 module.exports = router;
