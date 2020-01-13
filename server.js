@@ -1,3 +1,4 @@
+const { getUserById } = require("./lib/queries");
 // load .env data into process.env
 require("dotenv").config();
 
@@ -18,9 +19,6 @@ db.connect();
 
 exports.db = db;
 
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan("dev"));
 
 app.set("view engine", "ejs");
@@ -36,29 +34,37 @@ app.use(
 );
 app.use(express.static("public"));
 
-exports.getQueryResults = async sql => {
+const getQueryResults = async sql => {
   return db
     .query(sql)
     .then(res => res.rows)
     .catch(err => console.log(err));
 };
+exports.getQueryResults = getQueryResults;
 
-// Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
-const usersRoutes = require("./routes/users");
 
-// Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-app.use("/users", usersRoutes);
+app.use("/users", require("./routes/users"));
 app.use("/maps", require("./routes/maps"));
-// Note: mount other resources here, using the same pattern above
 
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
+
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.post("/login/:id", async (req, res) => {
+  const sql = getUserById(req.params.id);
+  const result = await getQueryResults(sql);
+  const user = result[0];
+  if (user) {
+    res.cookie('user-id', user.id).redirect('/');
+  } else {
+    res.status(403).send("Invalid credentials");
+  }
+});
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("user-id").redirect("/");
+})
 
 
 app.listen(PORT, () => {
