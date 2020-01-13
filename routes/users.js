@@ -29,4 +29,5 @@ router.get("/", (req, res) => {
   getQueryResults(sql).then(users => res.json(users));
 });
 
+
 module.exports = router;
