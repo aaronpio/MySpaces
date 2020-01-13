@@ -3,4 +3,44 @@
   max-height: 400px;
   width: 75vw;
   margin: 0 auto;
- }
+}
+
+.save-delete-map {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-items: space-between;
+  padding: 15px;
+  height: 68px;
+}
+
+.delete-map-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-items: space-between;
+}
+
+.save-map-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  justify-items: space-between;
+}
+
+#yes-marker {
+width: 100px;
+}
+
+#no-marker {
+  width: 100px;
+}
+
+#delete-map {
+  width: 150px;
+}
+
+#save-map {
+  width: 150px;
+}
+
