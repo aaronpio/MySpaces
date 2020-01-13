@@ -43,27 +43,23 @@ exports.getQueryResults = async sql => {
     .catch(err => console.log(err));
 };
 
-// Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
-const usersRoutes = require("./routes/users");
-
-// Mount all resource routes
-// Note: Feel free to replace the example routes below with your own
-app.use("/users", usersRoutes);
+app.use("/users", require("./routes/users"));
 app.use("/maps", require("./routes/maps"));
-app.use("/create", require("./routes/create-map"));
-// Note: mount other resources here, using the same pattern above
 
-// Home page
-// Warning: avoid creating more routes in this file!
-// Separate them into separate routes files (see above).
+
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.get("/create-map", (req, res) => {
-  res.render("create-map");
-});
+app.post("/login/:id", (req, res) => {
+  const sql = getUserById(req.params.id);
+  const user = getQueryResults(sql);
+  if (user) {
+
+  } else {
+    res.status(403).send("Invalid credentials");
+  }
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
