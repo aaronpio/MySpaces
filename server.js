@@ -51,16 +51,6 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.post("/login/:id", async (req, res) => {
-  const sql = getUserById(req.params.id);
-  const result = await getQueryResults(sql);
-  const user = result[0];
-  if (user) {
-    res.cookie('user-id', user.id).redirect('/');
-  } else {
-    res.status(403).send("Invalid credentials");
-  }
-});
 
 app.post("/logout", (req, res) => {
   res.clearCookie("user-id").redirect("/");

@@ -13,4 +13,8 @@ router.get("/", async (req, res) => {
   getQueryResults(sql).then(maps => res.json(maps));
 });
 
+router.get("/new", (req, res) => {
+  res.render("create-map");
+});
+
 module.exports = router;
