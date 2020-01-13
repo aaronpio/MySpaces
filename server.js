@@ -34,13 +34,26 @@ app.use(
 );
 app.use(express.static("public"));
 
+
+
 const getQueryResults = async sql => {
   return db
     .query(sql)
     .then(res => res.rows)
     .catch(err => console.log(err));
 };
-exports.getQueryResults = getQueryResults;
+
+const ifLoggedIn = (req, res, resolve) => {
+  const userID = req.session.cookie("user-id");
+  if (userID) {
+    resolve(userID);
+  } else {
+    res.redirect("/login");
+  }
+};
+
+exports = { getQueryResults, ifLoggedIn };
+
 
 
 app.use("/users", require("./routes/users"));
@@ -66,6 +79,11 @@ app.post("/logout", (req, res) => {
   res.clearCookie("user-id").redirect("/");
 })
 
+app.get("/profile", (req, res) => {
+  ifLoggedIn(req, res, (userID) => {
+    res.render("profile");
+  });
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
