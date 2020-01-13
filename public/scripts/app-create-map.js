@@ -19,14 +19,17 @@ $(() => {
   //   }
   // });
 
+
   const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
 
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    accessToken: 'pk.eyJ1IjoiYWFyb25tYXBib3giLCJhIjoiY2swaTcxYzhiMGFjZjNjcDdhbTAwamdjdCJ9.VWSP7Q-2MxofHRFWUZFyQA'
-  }).addTo(mymap)
+  const createNewMap = (mymap) => {
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      accessToken: 'pk.eyJ1IjoiYWFyb25tYXBib3giLCJhIjoiY2swaTcxYzhiMGFjZjNjcDdhbTAwamdjdCJ9.VWSP7Q-2MxofHRFWUZFyQA'
+    }).addTo(mymap)
+  }
 
   const mapZoomCentered = () => {
     // work with leaflets api to center view on pointers
@@ -44,9 +47,14 @@ $(() => {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+  createNewMap(mymap);
+
+  const arrayOfLatLng = [];
+  const arrayOfMarkers = [];
+
   const onMapClick = (e) => {
 
-    const marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+    const marker = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
 
     const keepMarkerInjection =
       `
@@ -96,6 +104,13 @@ $(() => {
         $("#marker-form").remove()
 
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}`).openPopup();
+
+        arrayOfMarkers.push(marker)
+
+        arrayOfLatLng.push([e.latlng.lat, e.latlng.lng])
+        if (arrayOfLatLng.length > 1) {
+          mymap.fitBounds(arrayOfLatLng);
+        }
       })
 
     })
@@ -109,26 +124,23 @@ $(() => {
       mymap.removeLayer(marker)
     })
     //--------------------------------------------------------------
-
   }
-
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   mymap.on('click', onMapClick);
 
-});
-//xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  //Save Map and delete Map buttons
 
-{/* <section class="map-form">
-  <h5>Want to keep this marker?</h5>
-  <h6>latitude, longitude</h6>
-  <button type="button" class="btn btn-primary">Primary</button>
-  <button type="button" class="btn btn-danger">Danger</button>
-  <form id="tweetForm">
-    <textarea name="text" placeholder="What are you humming about?"></textarea>
-    <div>
-      <input type="submit" value="Tweet" />
-      <span class="counter">140</span>
-    </div>
-  </form>
-</section> */}
+  //If 'CANCEL' button is Pressed - Removes form/marker
+  $("#delete-map").click(() => {
+    arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
+    mymap.setView([45.5017, -73.5673], 9)
+  })
+
+  //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
+});
+
 
 
