@@ -8,7 +8,7 @@ $(() => {
            <h3>${map.name}</h3>
            <p>Created by ${map.owner}</p>
          </div>`)
-        .appendTo($("body"));
+        .appendTo($("main"));
     }
   });
 
