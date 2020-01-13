@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 8080;
 const ENV = process.env.ENV || "development";
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const sass = require("node-sass-middleware");
 const app = express();
 const morgan = require("morgan");
@@ -23,6 +24,7 @@ app.use(morgan("dev"));
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(
   "/styles",
   sass({
@@ -44,7 +46,7 @@ const getQueryResults = async sql => {
 };
 
 const ifLoggedIn = (req, res, resolve) => {
-  const userID = req.session.cookie("user-id");
+  const userID = req.cookies["user-id"];
   if (userID) {
     resolve(userID);
   } else {
@@ -52,7 +54,7 @@ const ifLoggedIn = (req, res, resolve) => {
   }
 };
 
-exports = { getQueryResults, ifLoggedIn };
+module.exports = { getQueryResults, ifLoggedIn };
 
 
 
@@ -79,9 +81,14 @@ app.post("/logout", (req, res) => {
   res.clearCookie("user-id").redirect("/");
 })
 
-app.get("/profile", (req, res) => {
-  ifLoggedIn(req, res, (userID) => {
-    res.render("profile");
+app.get("/profile", async (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const sql = getUserById(userID);
+    const results = await getQueryResults(sql);
+    console.log(results)
+    const templateVars = { user: results[0] };
+    console.log(templateVars)
+    res.render("user-profile", templateVars);
   });
 })
 
