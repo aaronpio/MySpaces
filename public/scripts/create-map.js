@@ -1,11 +1,5 @@
 $(() => {
 
-  const escape = function (str) {
-    let div = document.createElement("div");
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
-  };
-
   const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
 
   const createNewBlankMap = (mymap) => {
@@ -17,11 +11,17 @@ $(() => {
     }).addTo(mymap)
   }
 
-  const saveMapToDatabase = (map) => {
+  const escape = function (str) {
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  };
+
+  const saveMapToDatabase = (url, data) => {
 
     $.ajax({
-      method,
-      url,
+      method: "POST",
+      url: "/api/maps",
       data
     })
       .done(function (result) {
@@ -32,26 +32,27 @@ $(() => {
         console.log('Error: ' + error)
       })
       .always(function () {
-        console.log('Request completed')
+        console.log('Map request completed')
       })
 
   }
 
-  const saveLocationToDatabase = (location) => {
-    //db query
+  const saveLocationToDatabase = (url, data) => {
+    $.ajax({
+      method: 'POST',
+      url: '/api/locations',
+      data
+    })
+      .done(function (result) {
+        console.log('Sent data for location', result)
+      })
+      .fail(function (error) {
+        console.log('Error: ' + error)
+      })
+      .always(function () {
+        console.log('Location request completed')
+      })
   }
-
-  const createNewLocation = (
-    mapId,
-    ownerId,
-    long,
-    lat,
-    title,
-    description,
-    imageUrl
-  ) => SQL`
-    INSERT INTO locations (map_id, owner_id, long, lat, title, description, image_url)
-    VALUES (${mapId}, ${ownerId}, ${long}, ${lat}, ${title}, ${description}, ${imageUrl});`;
 
   const disableSaveDelete = () => {
     $('#delete-map').prop('disabled', true)
@@ -144,6 +145,8 @@ $(() => {
         const markerDescription = escape($('#marker-form').find('input[name="description"]').val())
         const markerImageURL = escape($('#marker-form').find('input[name="image_url"]').val())
         console.log(markerTitle, markerDescription, markerImageURL)
+
+        saveLocationToDatabase({ markerTitle, markerDescription, markerImageURL })
 
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
@@ -241,7 +244,7 @@ $(() => {
     } else {
       const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
 
-      saveMapToDatabase("POST", "/api/maps/:id")
+      saveMapToDatabase({ mapName })
 
       arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
