@@ -18,8 +18,8 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
 
-const { getQueryResults, ifLoggedIn } = require("./lib/helpers")(db);
-module.exports = { getQueryResults, ifLoggedIn };
+const { execQuery, ifLoggedIn } = require("./lib/helpers")(db);
+module.exports = { execQuery, ifLoggedIn };
 
 app.use(morgan("dev"));
 

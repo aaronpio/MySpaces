@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getMapById } = require("../lib/queries")
-const { getQueryResults, ifLoggedIn } = require("../server")
+const { execQuery, ifLoggedIn } = require("../server")
 
 router.get("/", (req, res) => {
   res.render("index");
