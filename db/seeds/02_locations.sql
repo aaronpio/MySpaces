@@ -1,4 +1,4 @@
-INSERT INTO locations (title, description, image_url, longitude, latitude, map_id, owner_id) VALUES
+INSERT INTO locations (title, description, image_url, latitude, longitude, map_id, owner_id) VALUES
   ('Blate patronymic'             , 'Hi mom'                   , 'https://unsplash.it/300/200?image=459', 45.841471, -74.909297, 26, 19),
   ('Disenslave overcoated'        , 'Ervum rectus'             , 'https://unsplash.it/300/200?image=508', 45.14112 , -74.243198, 36, 8) ,
   ('Spermaphyte enwrite'          , 'hyposcenium deceit'       , 'https://unsplash.it/300/200?image=208', 45.041076, -74.720585, 12, 11),

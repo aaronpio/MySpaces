@@ -16,7 +16,7 @@ $(() => {
     url: `/api/locations/${mapID}`
   }).done(locations => {
     const markers = locations.map(location => {
-      const marker = L.marker([location.longitude, location.latitude])
+      const marker = L.marker([location.latitude, location.longitude])
       console.log(location, marker)
       marker.addTo(mymap)
       marker.bindPopup(`<b>${location.title}</b>
