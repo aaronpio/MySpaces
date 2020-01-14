@@ -17,11 +17,6 @@ $(() => {
     }).addTo(mymap)
   }
 
-  const mapZoomCentered = () => {
-    // work with leaflets api to center view on pointers
-    //called after every change
-  }
-
   const saveMapToDatabase = (map) => {
     //db query
   }
@@ -43,6 +38,22 @@ $(() => {
   const emptyMarkerArrays = () => {
     arrayOfLatLng = [];
     arrayOfMarkers = [];
+  }
+
+  const secondDeletePressOrCancel = () => {
+    $('.warning').remove();
+    $('#cancel-delete').remove()
+    $('.save-delete-map').css('justify-content', 'space-between')
+    $('.save-map-container').toggle()
+    mymap.on('click', onMapClick)
+  }
+
+  const secondSavePressOrCancel = () => {
+    $('.delete-map-container').toggle()
+    $('#cancel-save').remove()
+    $('.save-delete-map').css('justify-content', 'space-between')
+    $(".create-map-form").empty()
+    mymap.on('click', onMapClick)
   }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -150,26 +161,35 @@ $(() => {
 
     mymap.off('click', onMapClick);
 
-    console.log('hi')
+    console.log(deleteClickCounter)
     if (deleteClickCounter % 2 === 0) {
       $('.save-map-container').toggle()
-      $('.are-you-sure').prepend('<p> Are you sure? The current map will be lost forever... much like your youth.</p>')
+      $('.save-delete-map')
+        .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
+        .css('justify-content', 'flex-end')
+        .append('<button id="cancel-delete" type="button" class="btn">Cancel</button>')
+
+      $('#cancel-delete').click(() => {
+        secondDeletePressOrCancel();
+        deleteClickCounter++
+      })
+
     } else {
       arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
-      $('.are-you-sure').empty()
-      $('.save-map-container').toggle()
-      mymap.on('click', onMapClick)
+      secondDeletePressOrCancel();
       emptyMarkerArrays();
     }
     return deleteClickCounter++
   })
+
   //----------------------------------------------------
   //Save button
   let saveClickCounter = 0;
 
   const mapNameFormInjection = `
   <input class="form-control" id="map-name-input" type="text" name="map-name" placeholder="The name of your map">
+  <p id="save-are-you-sure"> Is the map to your liking? Saved maps can be edited later as well!</p>
   `
 
   $("#save-map").click(() => {
@@ -178,16 +198,23 @@ $(() => {
 
     if (saveClickCounter % 2 === 0) {
       $('.delete-map-container').toggle()
-      $('.are-you-sure').prepend('<p> Is the map to your liking? Saved maps can be edited later as well!</p>')
-      $(".save-map-name-form").append(mapNameFormInjection)
-      //const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
+
+      $('.save-delete-map')
+        .append('<button id="cancel-save" type="button" class="btn">Cancel</button>')
+        .css('justify-content', 'flex-start')
+
+      $(".create-map-form").append(mapNameFormInjection)
+
+      $('#cancel-save').click(() => {
+        secondSavePressOrCancel();
+        saveClickCounter++
+      })
+
     } else {
+      //const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
       arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
-      $('.are-you-sure').empty()
-      $('.delete-map-container').toggle()
-      mymap.on('click', onMapClick)
-      $(".save-map-name-form").empty()
+      secondSavePressOrCancel();
       emptyMarkerArrays();
     }
     return saveClickCounter++
