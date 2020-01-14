@@ -146,7 +146,6 @@ $(() => {
         const markerTitle = escape($('#marker-form').find('input[name="title"]').val())
         const markerDescription = escape($('#marker-form').find('input[name="description"]').val())
         const markerImageURL = escape($('#marker-form').find('input[name="image_url"]').val())
-        console.log(markerTitle, markerDescription, markerImageURL)
 
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
@@ -161,8 +160,6 @@ $(() => {
           description: markerDescription,
           imageUrl: markerImageURL
         })
-
-        console.log(markers)
 
         leafletMarkerObjects.push(marker)
 
@@ -256,17 +253,16 @@ $(() => {
       const mapName = escape($('#map-name-input').val())
 
       saveMapToDatabase({ mapName }, (mapID) => {
-        console.log(markers)
         markers.forEach(marker => {
-          console.log('hmmm')
+          console.log(marker)
           saveLocationToDatabase(marker, mapID)
         })
+        emptyMarkerArrays();
       })
 
       leafletMarkerObjects.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
       secondSavePressOrCancel();
-      emptyMarkerArrays();
     }
     return saveClickCounter++
   })
