@@ -1,7 +1,5 @@
 $(() => {
 
-  const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
-
   const createNewBlankMap = (mymap) => {
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -88,11 +86,14 @@ $(() => {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  createNewBlankMap(mymap);
 
   let arrayOfLatLng = [];
   let leafletMarkerObjects = [];
   let markers = [];
+
+  const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
+
+  createNewBlankMap(mymap);
 
   const onMapClick = (e) => {
 
@@ -144,12 +145,11 @@ $(() => {
       //If 'SUBMIT' button is Pressed
       $('#submit-marker').click(() => {
         const markerTitle = escape($('#marker-form').find('input[name="title"]').val())
-        const markerDescription = escape($('#marker-form').find('input[name="description"]').val())
+        const markerDescription = escape($('#marker-form').find('textarea[name="description"]').val())
         const markerImageURL = escape($('#marker-form').find('input[name="image_url"]').val())
 
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
-
 
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}`).openPopup();
 
@@ -200,7 +200,6 @@ $(() => {
 
     mymap.off('click', onMapClick);
 
-    console.log(deleteClickCounter)
     if (deleteClickCounter % 2 === 0) {
       $('.save-map-container').toggle()
       $('.save-delete-map')
@@ -254,7 +253,6 @@ $(() => {
 
       saveMapToDatabase({ mapName }, (mapID) => {
         markers.forEach(marker => {
-          console.log(marker)
           saveLocationToDatabase(marker, mapID)
         })
         emptyMarkerArrays();
