@@ -17,7 +17,7 @@ $(() => {
     return div.innerHTML;
   };
 
-  const saveMapToDatabase = (url, data) => {
+  const saveMapToDatabase = (data) => {
 
     $.ajax({
       method: "POST",
@@ -37,7 +37,7 @@ $(() => {
 
   }
 
-  const saveLocationToDatabase = (url, data) => {
+  const saveLocationToDatabase = (data) => {
     $.ajax({
       method: 'POST',
       url: '/api/locations',
