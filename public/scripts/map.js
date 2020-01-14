@@ -15,10 +15,14 @@ $(() => {
   $.ajax({
     url: `/api/locations/${mapID}`
   }).done(locations => {
-    for (let location of locations) {
-      const marker = L.marker(location.latitude, location.longitude).addTo(mymap)
+    const markers = locations.map(location => {
+      const marker = L.marker([location.longitude, location.latitude])
+      console.log(location, marker)
+      marker.addTo(mymap)
       marker.bindPopup(`<b>${location.title}</b>
-                        <br>${location.description}`)
-    }
+                        <br>${location.description}`).openPopup()
+      return marker
+    })
+    mymap.fitBounds(markers)
   }).fail(err => console.log(err))
 })
