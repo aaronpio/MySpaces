@@ -18,7 +18,23 @@ $(() => {
   }
 
   const saveMapToDatabase = (map) => {
-    //db query
+
+    $.ajax({
+      method,
+      url,
+      data
+    })
+      .done(function (result) {
+        console.log('Sent data for map name', result)
+        //
+      })
+      .fail(function (error) {
+        console.log('Error: ' + error)
+      })
+      .always(function () {
+        console.log('Request completed')
+      })
+
   }
 
   const saveLocationToDatabase = (location) => {
@@ -224,7 +240,8 @@ $(() => {
 
     } else {
       const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
-      //createNewMap(mapName, 1); //spoofing owner_id for now
+
+      saveMapToDatabase("POST", "/api/maps/:id")
 
       arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
