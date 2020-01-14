@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId } = require("../lib/queries.js");
-const { getQueryResults } = require("../server");
+const { getQueryResults, ifLoggedIn } = require("../server");
 
 // USERS
 router.get("/users/:id/maps", (req, res) => {
@@ -33,11 +33,13 @@ router.get("/maps/:id", async (req, res) => {
 
 router.post("/maps", async (req, res) => {
   console.log(req.params.body)
-  ifLoggedIn((req, res))
-  const { name } = req.params.body;
+  ifLoggedIn(req, res, async (userID) => {
+    //createNewMap(req.params.body)
+  })
+  //const { name } = req.params.body;
 
-  const sql = createNewMap(name);
-  getQueryResults(sql).then(_ => res.sendStatus(200));
+  //const sql = createNewMap(name);
+  //getQueryResults(sql).then(_ => res.sendStatus(200));
 });
 
 
@@ -48,8 +50,8 @@ router.get("/locations/:mapid", async (req, res) => {
 })
 
 router.post("/locations", async (req, res) => {
-  const sql = createNewLocation(
-  )
+  //const sql = createNewLocation()
+
 })
 
 module.exports = router;

@@ -67,6 +67,7 @@ $(() => {
   const emptyMarkerArrays = () => {
     arrayOfLatLng = [];
     arrayOfMarkers = [];
+    markers = [];
   }
 
   const secondDeletePressOrCancel = () => {
@@ -91,6 +92,7 @@ $(() => {
 
   let arrayOfLatLng = [];
   let arrayOfMarkers = [];
+  let markers = [];
 
   const onMapClick = (e) => {
 
@@ -149,9 +151,16 @@ $(() => {
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
 
-        console.log(marker)
 
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}`).openPopup();
+
+        markers.push({
+          long: e.latlng.lng,
+          lat: e.latlng.lat,
+          title: markerTitle,
+          description: markerDescription,
+          imageUrl: markerImageURL
+        })
 
         arrayOfMarkers.push(marker)
 
@@ -244,9 +253,10 @@ $(() => {
     } else {
       const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
 
-      //saveLocationToDatabase({ markerTitle, markerDescription, markerImageURL })
+      console.log('hi')
+      saveMapToDatabase(mapName)
 
-      saveMapToDatabase({ mapName })
+      //saveLocationToDatabase({ markerTitle, markerDescription, markerImageURL })
 
       arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
