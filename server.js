@@ -37,9 +37,6 @@ app.use(
 );
 app.use(express.static("public"));
 
-
-
-
 app.use("/users", require("./routes/users"));
 app.use("/maps", require("./routes/maps"));
 app.use("/api", require("./routes/api"));
