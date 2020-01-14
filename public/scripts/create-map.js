@@ -17,16 +17,16 @@ $(() => {
     return div.innerHTML;
   };
 
-  const saveMapToDatabase = (data) => {
+  const saveMapToDatabase = (data, callback) => {
 
     $.ajax({
       method: "POST",
       url: "/api/maps",
       data
     })
-      .done(function (result) {
-        console.log('Sent data for map name', result)
-        //
+      .done(function (mapID) {
+        console.log('Sent data for map name: ', mapID)
+        callback(mapID);
       })
       .fail(function (error) {
         console.log('Error: ' + error)
@@ -37,11 +37,11 @@ $(() => {
 
   }
 
-  const saveLocationToDatabase = (data) => {
+  const saveLocationToDatabase = (data, mapID) => {
     $.ajax({
       method: 'POST',
       url: '/api/locations',
-      data
+      data: { ...data, mapID }
     })
       .done(function (result) {
         console.log('Sent data for location', result)
@@ -66,7 +66,7 @@ $(() => {
 
   const emptyMarkerArrays = () => {
     arrayOfLatLng = [];
-    arrayOfMarkers = [];
+    leafletMarkerObjects = [];
     markers = [];
   }
 
@@ -91,7 +91,7 @@ $(() => {
   createNewBlankMap(mymap);
 
   let arrayOfLatLng = [];
-  let arrayOfMarkers = [];
+  let leafletMarkerObjects = [];
   let markers = [];
 
   const onMapClick = (e) => {
@@ -162,7 +162,9 @@ $(() => {
           imageUrl: markerImageURL
         })
 
-        arrayOfMarkers.push(marker)
+        console.log(markers)
+
+        leafletMarkerObjects.push(marker)
 
         arrayOfLatLng.push([e.latlng.lat, e.latlng.lng])
         if (arrayOfLatLng.length > 1) {
@@ -215,7 +217,7 @@ $(() => {
       })
 
     } else {
-      arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
+      leafletMarkerObjects.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
       secondDeletePressOrCancel();
       emptyMarkerArrays();
@@ -251,14 +253,17 @@ $(() => {
       })
 
     } else {
-      const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
+      const mapName = escape($('#map-name-input').val())
 
-      console.log('hi')
-      saveMapToDatabase(mapName)
+      saveMapToDatabase({ mapName }, (mapID) => {
+        console.log(markers)
+        markers.forEach(marker => {
+          console.log('hmmm')
+          saveLocationToDatabase(marker, mapID)
+        })
+      })
 
-      //saveLocationToDatabase({ markerTitle, markerDescription, markerImageURL })
-
-      arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
+      leafletMarkerObjects.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
       secondSavePressOrCancel();
       emptyMarkerArrays();

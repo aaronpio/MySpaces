@@ -13,7 +13,7 @@ router.get("/new", (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const sql = getMapById(req.params.id)
-  const result = await getQueryResults(sql)
+  const result = await execQuery(sql)
   const map = result[0]
   res.render("map", { map });
 });

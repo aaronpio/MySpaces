@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
 
 app.post("/login/:id", async (req, res) => {
   const sql = getUserById(req.params.id);
-  const result = await getQueryResults(sql);
+  const result = await execQuery(sql);
   const user = result[0];
   if (user) {
     res.cookie('user-id', user.id).redirect('/');
@@ -64,7 +64,7 @@ app.post("/logout", (req, res) => {
 app.get("/profile", async (req, res) => {
   ifLoggedIn(req, res, async (userID) => {
     const sql = getUserById(userID);
-    const results = await getQueryResults(sql);
+    const results = await execQuery(sql);
     console.log(results)
     const templateVars = { user: results[0] };
     console.log(templateVars)
