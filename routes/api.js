@@ -31,8 +31,12 @@ router.get("/maps/:id", async (req, res) => {
   getQueryResults(sql).then(maps => res.json(maps)[0]);
 });
 
-router.post("/maps/:id", async (req, res) => {
-  const sql = createNewMap(req.params.id);
+router.post("/maps", async (req, res) => {
+  console.log(req.params.body)
+  ifLoggedIn((req, res))
+  const { name } = req.params.body;
+
+  const sql = createNewMap(name ,);
   getQueryResults(sql).then(_ => res.sendStatus(200));
 });
 
