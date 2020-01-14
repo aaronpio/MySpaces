@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title><%= map.name %> - MySpaces</title>
+  <%- include('./partials/_dependencies') %>
+  <script src="/scripts/map.js"></script>
+</head>
+
+<body>
+  <%- include('./partials/_nav') %>
+  <main>
+    <h1><%= map.name %></h1>
+    <h2>Click on the map to add your own favourite spaces:</h2>
+    <div class="map-container">
+      <div id="mapid"></div>
+    </div>
+  </main>
+</body>
+
+</html>
