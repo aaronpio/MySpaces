@@ -146,10 +146,10 @@ $(() => {
         const markerImageURL = escape($('#marker-form').find('input[name="image_url"]').val())
         console.log(markerTitle, markerDescription, markerImageURL)
 
-        saveLocationToDatabase({ markerTitle, markerDescription, markerImageURL })
-
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
+
+        console.log(marker)
 
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}`).openPopup();
 
@@ -243,6 +243,8 @@ $(() => {
 
     } else {
       const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
+
+      //saveLocationToDatabase({ markerTitle, markerDescription, markerImageURL })
 
       saveMapToDatabase({ mapName })
 

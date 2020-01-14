@@ -36,7 +36,7 @@ router.post("/maps", async (req, res) => {
   ifLoggedIn((req, res))
   const { name } = req.params.body;
 
-  const sql = createNewMap(name ,);
+  const sql = createNewMap(name);
   getQueryResults(sql).then(_ => res.sendStatus(200));
 });
 
@@ -45,6 +45,11 @@ router.post("/maps", async (req, res) => {
 router.get("/locations/:mapid", async (req, res) => {
   const sql = getLocationsForMapId(req.params.mapid)
   getQueryResults(sql).then(locations => res.json(locations))
+})
+
+router.post("/locations", async (req, res) => {
+  const sql = createNewLocation(
+  )
 })
 
 module.exports = router;
