@@ -8,7 +8,7 @@ $(() => {
 
   const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
 
-  const createNewMap = (mymap) => {
+  const createNewBlankMap = (mymap) => {
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
@@ -24,6 +24,18 @@ $(() => {
   const saveLocationToDatabase = (location) => {
     //db query
   }
+
+  const createNewLocation = (
+    mapId,
+    ownerId,
+    long,
+    lat,
+    title,
+    description,
+    imageUrl
+  ) => SQL`
+    INSERT INTO locations (map_id, owner_id, long, lat, title, description, image_url)
+    VALUES (${mapId}, ${ownerId}, ${long}, ${lat}, ${title}, ${description}, ${imageUrl});`;
 
   const disableSaveDelete = () => {
     $('#delete-map').prop('disabled', true)
@@ -58,7 +70,7 @@ $(() => {
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  createNewMap(mymap);
+  createNewBlankMap(mymap);
 
   let arrayOfLatLng = [];
   let arrayOfMarkers = [];
@@ -95,7 +107,7 @@ $(() => {
 
       <input class="form-control" type="text" name="image_url" placeholder="An Image URL you'd like to share of the space">
       <button type="button" id="submit-marker" class="btn btn-primary">Submit Marker</button>
-      <button type="button" id="cancel-marker" class="btn btn-danger"> Cancel </button>
+      <button type="button" id="cancel-marker" class="btn btn-basic"> Cancel </button>
       </article>`
 
       $("#yes-no-keep-marker").remove()
@@ -211,7 +223,9 @@ $(() => {
       })
 
     } else {
-      //const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
+      const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
+      //createNewMap(mapName, 1); //spoofing owner_id for now
+
       arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
       mymap.setView([45.5017, -73.5673], 9)
       secondSavePressOrCancel();
