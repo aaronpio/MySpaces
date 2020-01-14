@@ -6,20 +6,6 @@ $(() => {
     return div.innerHTML;
   };
 
-  // $.ajax({
-  //   method: "GET",
-  //   url: "/maps"
-  // }).done(maps => {
-  //   for (map of maps) {
-  //     $(`<div class="map-list-item">
-  //          <h3>${map.name}</h3>
-  //          <p>Created by ${map.owner}</p>
-  //        </div>`)
-  //       .appendTo($("body"));
-  //   }
-  // });
-
-
   const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
 
   const createNewMap = (mymap) => {
@@ -31,11 +17,6 @@ $(() => {
     }).addTo(mymap)
   }
 
-  const mapZoomCentered = () => {
-    // work with leaflets api to center view on pointers
-    //called after every change
-  }
-
   const saveMapToDatabase = (map) => {
     //db query
   }
@@ -44,15 +25,47 @@ $(() => {
     //db query
   }
 
+  const disableSaveDelete = () => {
+    $('#delete-map').prop('disabled', true)
+    $('#save-map').prop('disabled', true)
+  }
+
+  const enableSaveDelete = () => {
+    $('#delete-map').prop('disabled', false)
+    $('#save-map').prop('disabled', false)
+  }
+
+  const emptyMarkerArrays = () => {
+    arrayOfLatLng = [];
+    arrayOfMarkers = [];
+  }
+
+  const secondDeletePressOrCancel = () => {
+    $('.warning').remove();
+    $('#cancel-delete').remove()
+    $('.save-delete-map').css('justify-content', 'space-between')
+    $('.save-map-container').toggle()
+    mymap.on('click', onMapClick)
+  }
+
+  const secondSavePressOrCancel = () => {
+    $('.delete-map-container').toggle()
+    $('#cancel-save').remove()
+    $('.save-delete-map').css('justify-content', 'space-between')
+    $(".create-map-form").empty()
+    mymap.on('click', onMapClick)
+  }
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
   createNewMap(mymap);
 
-  const arrayOfLatLng = [];
-  const arrayOfMarkers = [];
+  let arrayOfLatLng = [];
+  let arrayOfMarkers = [];
 
   const onMapClick = (e) => {
+
+    disableSaveDelete();
 
     const marker = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
 
@@ -77,7 +90,9 @@ $(() => {
         `
       <article id="marker-form">
       <input class="form-control" type="text" name="title" placeholder="The name of your space">
-      <input class="form-control" type="text" name="description" placeholder="A short and sweet description">
+
+      <textarea class="form-control" rows="3" name="description" placeholder="Short and sweet description of your space"></textarea>
+
       <input class="form-control" type="text" name="image_url" placeholder="An Image URL you'd like to share of the space">
       <button type="button" id="submit-marker" class="btn btn-primary">Submit Marker</button>
       <button type="button" id="cancel-marker" class="btn btn-danger"> Cancel </button>
@@ -91,6 +106,8 @@ $(() => {
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
         mymap.removeLayer(marker)
+
+        enableSaveDelete();
       })
 
       //If 'SUBMIT' button is Pressed
@@ -111,6 +128,8 @@ $(() => {
         if (arrayOfLatLng.length > 1) {
           mymap.fitBounds(arrayOfLatLng);
         }
+
+        enableSaveDelete();
       })
 
     })
@@ -122,24 +141,92 @@ $(() => {
       mymap.on('click', onMapClick)
       $("#yes-no-keep-marker").remove()
       mymap.removeLayer(marker)
+      $('#delete-map').prop('disabled', false)
+      $('#save-map').prop('disabled', false)
     })
     //--------------------------------------------------------------
   }
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  mymap.on('click', onMapClick);
+
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  //Save Map and delete Map buttons
+  //Save Map and Delete Map buttons
 
-  //If 'CANCEL' button is Pressed - Removes form/marker
+
+  //----------------------------------------------------
+  //Delete button
+  let deleteClickCounter = 0;
+
   $("#delete-map").click(() => {
-    arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
-    mymap.setView([45.5017, -73.5673], 9)
+
+    mymap.off('click', onMapClick);
+
+    console.log(deleteClickCounter)
+    if (deleteClickCounter % 2 === 0) {
+      $('.save-map-container').toggle()
+      $('.save-delete-map')
+        .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
+        .css('justify-content', 'flex-end')
+        .append('<button id="cancel-delete" type="button" class="btn">Cancel</button>')
+
+      $('#cancel-delete').click(() => {
+        secondDeletePressOrCancel();
+        deleteClickCounter++
+      })
+
+    } else {
+      arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
+      mymap.setView([45.5017, -73.5673], 9)
+      secondDeletePressOrCancel();
+      emptyMarkerArrays();
+    }
+    return deleteClickCounter++
   })
 
+  //----------------------------------------------------
+  //Save button
+  let saveClickCounter = 0;
+
+  const mapNameFormInjection = `
+  <input class="form-control" id="map-name-input" type="text" name="map-name" placeholder="The name of your map">
+  <p id="save-are-you-sure"> Is the map to your liking? Saved maps can be edited later as well!</p>
+  `
+
+  $("#save-map").click(() => {
+
+    mymap.off('click', onMapClick);
+
+    if (saveClickCounter % 2 === 0) {
+      $('.delete-map-container').toggle()
+
+      $('.save-delete-map')
+        .append('<button id="cancel-save" type="button" class="btn">Cancel</button>')
+        .css('justify-content', 'flex-start')
+
+      $(".create-map-form").append(mapNameFormInjection)
+
+      $('#cancel-save').click(() => {
+        secondSavePressOrCancel();
+        saveClickCounter++
+      })
+
+    } else {
+      //const mapName = escape($('.save-map-name-form').find('input[name="map-name"]').val())
+      arrayOfMarkers.forEach(marker => mymap.removeLayer(marker))
+      mymap.setView([45.5017, -73.5673], 9)
+      secondSavePressOrCancel();
+      emptyMarkerArrays();
+    }
+    return saveClickCounter++
+  })
+
+  //----------------------------------------------------
+
+
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
+  mymap.on('click', onMapClick);
 });
 
 

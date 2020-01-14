@@ -4,25 +4,31 @@
 <head>
   <title>MySpaces</title>
   <%- include('./partials/_dependencies') %>
-  <script src="/scripts/app-create-map.js"></script>
+  <script src="/scripts/create-map.js"></script>
 </head>
 
 <body>
+  <%- include('./partials/_nav') %>
   <main>
-    <%- include('./partials/_nav') %>
-    <div class="content">
-      <h1>Map Creator</h1>
-      <h2>Add your favourite spaces to the map:</h2>
-      <section class="map-container">
-        <div id="mapid"></div>
-      </section>
-      <section class="save-delete-map">
-        <button type="button" id="save-map" class="btn btn-success">Save Map</button><br>
+    <h1>Map Creator</h1>
+    <h2>Click on map to add your favourite spaces:</h2>
+    <section class="map-container">
+      <div id="mapid"></div>
+    </section>
+    <section class="save-delete-map">
+      <div class='save-map-container'>
+        <button type="button" id="save-map" class="btn btn-success">Save Map</button>
+      </div>
+      <div class='delete-map-container'>
         <button type="button" id="delete-map" class="btn btn-danger"> Delete Map </button>
-      </section>
-      <section class=create-map-form>
+      </div>
+    </section>
+    <section class=create-map-form>
 
-      </section>
+      <article class="save-map-name-form">
+
+      </article>
+    </section>
   </main>
 </body>
 
