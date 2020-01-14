@@ -60,6 +60,7 @@ module.exports = { getQueryResults, ifLoggedIn };
 
 app.use("/users", require("./routes/users"));
 app.use("/maps", require("./routes/maps"));
+app.use("/api", require("./routes/api"));
 
 
 app.get("/", (req, res) => {
