@@ -1,7 +1,7 @@
 $(() => {
   $.ajax({
     method: "GET",
-    url: "/maps"
+    url: "/api/maps"
   }).done(maps => {
     for (map of maps) {
       $(`<div class="map-list-item">

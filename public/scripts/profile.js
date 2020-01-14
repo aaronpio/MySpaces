@@ -1,7 +1,7 @@
 $(() => {
   const userID = /user-id=(\d+)/.exec(document.cookie)[1];
   $.ajax({
-    url: `/users/${userID}/maps`
+    url: `/api/users/${userID}/maps`
   }).done(maps => {
     // MAP ALL THE THINGS
     const $maps = maps.map(map => {
