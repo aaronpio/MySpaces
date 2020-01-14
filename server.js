@@ -18,7 +18,8 @@ const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
 
-exports.db = db;
+const { getQueryResults, ifLoggedIn } = require("./lib/helpers")(db);
+module.exports = { getQueryResults, ifLoggedIn };
 
 app.use(morgan("dev"));
 
@@ -36,25 +37,6 @@ app.use(
 );
 app.use(express.static("public"));
 
-
-
-const getQueryResults = async sql => {
-  return db
-    .query(sql)
-    .then(res => res.rows)
-    .catch(err => console.log(err));
-};
-
-const ifLoggedIn = (req, res, resolve) => {
-  const userID = req.cookies["user-id"];
-  if (userID) {
-    resolve(userID);
-  } else {
-    res.redirect("/login");
-  }
-};
-
-module.exports = { getQueryResults, ifLoggedIn };
 
 
 
