@@ -11,10 +11,31 @@
   <%- include('./partials/_nav') %>
   <main>
     <h1><%= map.name %></h1>
-    <h2>Click on the map to add your own favourite spaces:</h2>
+    <h2>View the map, and feel free to add your own spaces:</h2>
     <div class="map-container">
       <div id="mapid"></div>
     </div>
+    <section class="save-delete-map">
+      <div class='save-map-container'>
+        <form id="update-map-form">
+          <button type="submit" id="update-map" class="btn btn-success">Update Map</button>
+        </form>
+      </div>
+      <div class='delete-map-container'>
+        <form id="delete-map-form">
+          <button type="submit" id="delete-map" class="btn btn-danger"> Delete Map </button>
+        </form>
+      </div>
+    </section>
+    <section class='create-map-form'>
+
+      <article class="save-map-name-form">
+
+      </article>
+    </section>
+    <section class="locations-list">
+
+    </section>
   </main>
 </body>
 

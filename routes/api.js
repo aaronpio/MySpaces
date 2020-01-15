@@ -53,4 +53,16 @@ router.post("/locations", async (req, res) => {
   })
 })
 
+router.post(`/:mapID/update`, (req, res) => {
+  console.log('yoyoyoyoy')
+  ifLoggedIn(req, res, async (userID) => {
+    const mapID = req.params.mapID
+    const sql = updateMapById(mapID)
+    execQuery(sql).then(() => {
+      console.log(`Map with ID: ${mapID} was Updated `)
+      res.render('index')
+    })
+  })
+})
+
 module.exports = router;

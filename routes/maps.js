@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getMapById } = require("../lib/queries")
+const { getMapById, deleteMapById } = require("../lib/queries")
 const { execQuery, ifLoggedIn } = require("../server")
 
 router.get("/", (req, res) => {
@@ -17,5 +17,16 @@ router.get("/:id", async (req, res) => {
   const map = result[0]
   res.render("map", { map });
 });
+
+router.post(`/:mapID/delete`, (req, res) => {
+  const mapID = req.params.mapID
+  ifLoggedIn(req, res, async (userID) => {
+    const sql = deleteMapById(mapID)
+    execQuery(sql).then(() => {
+      console.log(`Map with ID: ${mapID} was Deleted `)
+      res.render('index')
+    })
+  })
+})
 
 module.exports = router;
