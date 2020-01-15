@@ -1,5 +1,3 @@
-import { deleteAllLocationsForMapId } from "../../lib/queries";
-
 $(() => {
   const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
 
@@ -39,7 +37,6 @@ $(() => {
     url: `/api/locations/${mapID}`
   }).done(locations => {
     const markers = locations.map(location => {
-      arrayOfLocations.push(location)
       const marker = L.marker([location.latitude, location.longitude])
       marker.addTo(mymap)
       marker.bindPopup(`<b>${location.title}</b>
@@ -113,6 +110,7 @@ $(() => {
 
   let arrayOfLatLng = [];
   let leafletMarkerObjects = [];
+  let arrayOfNewLocations = [];
   //let markers = [];
 
   const onMapClick = (e) => {
@@ -173,7 +171,7 @@ $(() => {
 
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}<br> <img src="${markerImageURL}" height="100px" width="100px"/>`, { width: 1 }).openPopup();
 
-        arrayOfLocations.push({
+        arrayOfNewLocations.push({
           description: markerDescription,
           image_url: markerImageURL,
           latitude: e.latlng.lat,
@@ -275,7 +273,7 @@ $(() => {
     } else {
       //deleteAllLocationsForMapId()
 
-      arrayOfLocations.forEach((location) => {
+      arrayOfNewLocations.forEach((location) => {
         saveLocationToDatabase(location, mapID)
       })
     }
