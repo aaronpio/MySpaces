@@ -3,7 +3,15 @@
   <a id="nav-title" href="/">myspaces</a>
   <a id="nav-create" href="/maps/new">Create Map</a>
   <a id="nav-browse" href="/maps">Browse</a>
-  <form action="/login/1" method="POST"><button>User1</button></form>
+  <form class="form-inline" id="nav-user1" action="/login/1" method="POST">
+    <button class="btn btn-primary">User1</button>
+  </form>
+  <form class="form-inline" id="nav-user2" action="/login/2" method="POST">
+    <button class="btn btn-primary">User2</button>
+  </form>
+  <form class="form-inline" id="nav-logout" action="/logout" method="POST">
+    <button class="btn btn-primary">Logout</button>
+  </form>
   <a id="nav-login" href="/login">Login</a>
   <a id="nav-signup" href="/signup">Sign up</a>
 </nav>
