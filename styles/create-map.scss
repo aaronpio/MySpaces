@@ -6,6 +6,7 @@
   border-radius: 15px;
   border-style: solid;
   border-color: lightgray;
+  word-wrap: break-word;
 }
 
 .save-delete-map {
@@ -39,6 +40,9 @@
 
 }
 
+img {
+  border-radius: 10px;
+}
 
 #yes-no-keep-marker {
 

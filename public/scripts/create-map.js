@@ -151,7 +151,7 @@ $(() => {
         mymap.on('click', onMapClick)
         $("#marker-form").remove()
 
-        marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}`).openPopup();
+        marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}<br> <img src="${markerImageURL}" height="100px" width="100px"/>`, { maxWidth: 100 }).openPopup();
 
         markers.push({
           long: e.latlng.lng,
