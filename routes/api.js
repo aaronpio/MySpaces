@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId, createNewMap, createNewLocation, addFavorite, getFavoritesForUserId, removeFavorite } = require("../lib/queries.js");
+const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId, createNewMap, createNewLocation, addFavorite, getFavoritesForUserId, removeFavorite, isFavorited } = require("../lib/queries.js");
 const { execQuery, ifLoggedIn } = require("../server");
 
 // USERS
@@ -54,6 +54,17 @@ router.post("/locations", async (req, res) => {
 
 
 // FAVORITES
+router.post("/favorites/:mapid/toggle", async (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const favoritedSQL = isFavorited(userID, req.params.mapid);
+    const isFavoritedResult = await execQuery(favoritedSQL);
+    const favorited = isFavoritedResult.length > 0;
+    const sql = isFavorited ? removeFavorite(userID, req.params.mapid) : addFavorite(userID, req.params.mapid);
+    console.log(sql)
+    execQuery(sql).then(() => res.sendStatus(200))
+  })
+})
+
 router.post("/favorites/:mapid/delete", async (req, res) => {
   ifLoggedIn(req, res, async (userID) => {
     const sql = removeFavorite(userID, req.params.mapid)
