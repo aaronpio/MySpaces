@@ -53,6 +53,16 @@ main {
   background-color: white;
 }
 
+#maps-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#maps-list-container > * {
+  margin-top: 1rem;
+}
+
 .map-list-item {
   padding-top: 8px;
 }
