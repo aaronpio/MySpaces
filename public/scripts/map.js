@@ -1,5 +1,3 @@
-import { deleteAllLocationsForMapId } from "../../lib/queries";
-
 $(() => {
   const mymap = L.map("mapid").setView([45.5017, -73.5673], 9);
 
@@ -13,11 +11,10 @@ $(() => {
   const url = document.location.href;
   const urlParts = url.split("/");
   const mapID = urlParts[urlParts.length - 1];
-  const arrayOfLocations = [];
 
   const populateLocationsList = (location) => {
 
-    const locationListInjection =
+    const $location =
       `
     <article class="location-card">
     <img src="${location.image_url}" width="200px" height="170px"><img>
@@ -32,14 +29,13 @@ $(() => {
     </article>
     `
 
-    $(".locations-list").prepend(locationListInjection)
+    $(".locations-list").append($location)
   }
 
   $.ajax({
     url: `/api/locations/${mapID}`
   }).done(locations => {
     const markers = locations.map(location => {
-      arrayOfLocations.push(location)
       const marker = L.marker([location.latitude, location.longitude])
       marker.addTo(mymap)
       marker.bindPopup(`<b>${location.title}</b>
@@ -87,13 +83,7 @@ $(() => {
     $('#save-map').prop('disabled', false)
   }
 
-  const emptyMarkerArrays = () => {
-    arrayOfLatLng = [];
-    leafletMarkerObjects = [];
-    //markers = [];
-  }
-
-  const secondDeletePressOrCancel = () => {
+  const cancelDeletePress = () => {
     $('.warning').remove();
     $('#cancel-delete').remove()
     $('.save-delete-map').css('justify-content', 'space-between')
@@ -101,7 +91,7 @@ $(() => {
     mymap.on('click', onMapClick)
   }
 
-  const secondSavePressOrCancel = () => {
+  const updateSavePress = () => {
     $('.delete-map-container').toggle()
     $('#cancel-save').remove()
     $('.save-delete-map').css('justify-content', 'space-between')
@@ -234,7 +224,7 @@ $(() => {
 
 
       $('#cancel-delete').click(() => {
-        secondDeletePressOrCancel();
+        cancelDeletePress();
         $("#delete-map-form").removeAttr('method', 'POST')
         $("#delete-map-form").removeAttr('action', `/maps/${mapID}/delete`)
 
@@ -268,7 +258,7 @@ $(() => {
       $(".create-map-form").append(mapNameFormInjection)
 
       $('#cancel-save').click(() => {
-        secondSavePressOrCancel();
+        updateSavePress();
 
         updateClickCounter++
       })
