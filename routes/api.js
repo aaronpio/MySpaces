@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId, createNewMap, createNewLocation } = require("../lib/queries.js");
+const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId, createNewMap, createNewLocation, addFavorite, getFavoritesForUserId, removeFavorite } = require("../lib/queries.js");
 const { execQuery, ifLoggedIn } = require("../server");
 
 // USERS
@@ -46,11 +46,34 @@ router.get("/locations/:mapid", async (req, res) => {
 })
 
 router.post("/locations", async (req, res) => {
-  console.log(req.body)
   ifLoggedIn(req, res, async (userID) => {
     const sql = createNewLocation(req.body.mapID, userID, req.body.long, req.body.lat, req.body.title, req.body.description, req.body.imageUrl)
-    execQuery(sql).then(res => console.log('Locations Saved: ' + res))
+    execQuery(sql).then(res => res.sendStatus(200))
   })
 })
+
+
+// FAVORITES
+router.post("/favorites/:mapid/delete", async (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const sql = removeFavorite(userID, req.params.mapid)
+    execQuery(sql).then(res => res.sendStatus(200))
+  })
+})
+
+router.post("/favorites/:mapid", async (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const sql = addFavorite(userID, req.params.mapid)
+    execQuery(sql).then(res => res.sendStatus(200))
+  })
+})
+
+router.get("/favorites", async (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const sql = getFavoritesForUserId(userID)
+    execQuery(sql).then(favorites => res.json(favorites))
+  })
+})
+
 
 module.exports = router;

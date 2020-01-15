@@ -7,7 +7,7 @@ CASCADE;
 DROP TABLE IF EXISTS locations
 CASCADE;
 
-DROP TABLE IF EXISTS favourite_maps
+DROP TABLE IF EXISTS favorite_maps
 CASCADE;
 
 
