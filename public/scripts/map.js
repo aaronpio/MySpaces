@@ -204,8 +204,6 @@ $(() => {
   //----------------------------------------------------
   //Delete button
   let deleteClickCounter = 0;
-  $('.save-delete-map')
-    .css('justify-content', 'flex-end')
 
   $("#delete-map").click((e) => {
 
@@ -214,7 +212,7 @@ $(() => {
     if (deleteClickCounter % 2 === 0) {
       e.preventDefault()
 
-      $('.save-delete-map')
+      $('.delete-map-section')
         .append('<button id="cancel-delete" type="button" class="btn">Cancel</button>')
         .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
 
