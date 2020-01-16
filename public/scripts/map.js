@@ -12,6 +12,34 @@ $(() => {
   const urlParts = url.split("/");
   const mapID = urlParts[urlParts.length - 1];
 
+  const $favBtn = $(`
+   <a href="#" style="margin-right: 8px;" class="btn btn-outline-warning">Add to favorites</a>`);
+
+  const toggleFavBtn = $favBtn => {
+    $favBtn.toggleClass("btn-outline-warning");
+    $favBtn.toggleClass("btn-outline-danger");
+    $favBtn.hasClass("btn-outline-warning")
+      ? $favBtn.text("Add to favorites")
+      : $favBtn.text("Remove from favorites");
+  }
+
+  $.ajax({ url: "/api/favorites" }).done(favorites => {
+    console.log(favorites)
+    const isFavorited = favorites.filter(fav => fav.map_id = mapID).length > 0;
+    console.log(isFavorited)
+    if (isFavorited) toggleFavBtn($favBtn)
+    $(".delete-map-section").prepend($favBtn)
+  })
+
+  $favBtn.click(e => {
+    $.ajax({
+      url: `/api/favorites/${mapID}/toggle`,
+      method: "POST"
+    }).done(() => {
+      toggleFavBtn($favBtn)
+    });
+  });
+
   const locations = new Map();
 
   const createLocationCard = (location) => {
@@ -232,7 +260,6 @@ $(() => {
 
       $('.delete-map-section')
         .append('<button id="cancel-delete" type="button" class="btn">Cancel</button>')
-        .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
 
       $("#delete-map-form").attr('method', 'POST')
       $("#delete-map-form").attr('action', `/maps/${mapID}/delete`)
