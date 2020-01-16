@@ -12,6 +12,8 @@ $(() => {
   const urlParts = url.split("/");
   const mapID = urlParts[urlParts.length - 1];
 
+  const locations = new Map();
+
   const createLocationCard = (location) => {
 
     const $location =
@@ -24,11 +26,11 @@ $(() => {
         </div>
       <div id="card-buttons">
         <form id="edit-location-form">
-        <input type="hidden" id="location_id" value="${location.id}">
+        <input type="hidden" id="edit-location-input" value="${location.id}">
           <button id="edit-location" type="submit" class="btn btn-outline-warning">Edit</button>
         </form>
         <form id="id="delete-location-form">
-          <input type="hidden" id="location_id" value="${location.id}">
+          <input type="hidden" id="delete-location-input" value="${location.id}">
           <button id="delete-location" type="submit" class="btn btn-outline-danger">Delete</button>
         </form>
       <div>
@@ -38,19 +40,27 @@ $(() => {
     $(".locations-list").append($location)
   }
 
+  const renderLocations = locs => {
+    const markers = [];
+    for (let [_, loc] of locs) {
+      const marker = L.marker([loc.latitude, loc.longitude])
+      marker.addTo(mymap)
+      marker.bindPopup(`<b>${loc.title}</b>
+                        <br>${loc.description}
+                        <br><img src="${loc.image_url}" height="100px" width="100px"/>`, { width: 100 })
+      createLocationCard(loc);
+      markers.push(marker)
+    }
+    mymap.fitBounds(markers)
+  }
+
   $.ajax({
     url: `/api/locations/${mapID}`
-  }).done(locations => {
-    const markers = locations.map(location => {
-      const marker = L.marker([location.latitude, location.longitude])
-      marker.addTo(mymap)
-      marker.bindPopup(`<b>${location.title}</b>
-                        <br>${location.description}
-                        <br><img src="${location.image_url}" height="100px" width="100px"/>`, { width: 100 })
-      createLocationCard(location);
-      return marker
-    })
-    //mymap.fitBounds(markers)
+  }).done(locs => {
+    for (let loc of locs) {
+      locations.set(loc.id, loc);
+    }
+    renderLocations(locations)
   }).fail(err => console.log(err))
 
 
@@ -157,23 +167,23 @@ $(() => {
 
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}<br> <img src="${markerImageURL}" height="100px" width="100px"/>`, { width: 1 }).openPopup();
 
-        arrayOfLocations.push({
+        const location = {
           description: markerDescription,
           image_url: markerImageURL,
           latitude: e.latlng.lat,
           longitude: e.latlng.lng,
           map_id: mapID,
           title: markerTitle
-        })
-
-        leafletMarkerObjects.push(marker)
-
-        arrayOfLatLng.push([e.latlng.lat, e.latlng.lng])
-        if (arrayOfLatLng.length > 1) {
-          mymap.fitBounds(arrayOfLatLng);
         }
 
-        enableDelete();
+        console.log("LOCATION: ", location)
+        $.ajax({ url: "/api/locations", method: "POST", data: location }).done(response => {
+          console.log("RESPONSE:", response)
+          const locationID = response[0].id;
+          locations.set(locationID, { locationID, ...location })
+          renderLocations(locations)
+          enableDelete();
+        })
       })
 
     })

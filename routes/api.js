@@ -47,8 +47,16 @@ router.get("/locations/:mapid", async (req, res) => {
 
 router.post("/locations", async (req, res) => {
   ifLoggedIn(req, res, async (userID) => {
-    const sql = createNewLocation(req.body.mapID, userID, req.body.long, req.body.lat, req.body.title, req.body.description, req.body.imageUrl)
-    execQuery(sql).then(res => console.log('Stored locations: ' + res))
+    console.log(req.body)
+    const { map_id,
+            longitude,
+            latitude,
+            title,
+            description,
+            image_url } = req.body
+    const sql = createNewLocation(map_id, userID, longitude, latitude, title, description, image_url)
+    console.log(sql)
+    execQuery(sql).then(id => {console.log(id);res.json(id)})
   })
 })
 
