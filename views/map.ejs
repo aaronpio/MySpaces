@@ -1,34 +1,30 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title><%= map.name %> - MySpaces</title>
+    <%- include('./partials/_dependencies') %>
+    <script src="/scripts/map.js"></script>
+  </head>
 
-<head>
-  <title><%= map.name %> - MySpaces</title>
-  <%- include('./partials/_dependencies') %>
-  <script src="/scripts/map.js"></script>
-</head>
-
-<body>
-  <%- include('./partials/_nav') %>
-  <main>
-    <h1><%= map.name %></h1>
-    <h2>View the map, and feel free to add your own spaces:</h2>
-    <div class="map-container">
-      <div id="mapid"></div>
-    </div>
-    <section class="delete-map-section">
-      <div class='delete-map-container'>
-        <form id="delete-map-form">
-          <button type="submit" id="delete-map" class="btn btn-danger"> Delete Map </button>
-        </form>
+  <body>
+    <%- include('./partials/_nav') %>
+    <main>
+      <h1><%= map.name %></h1>
+      <h2>View the map, and feel free to add your own spaces:</h2>
+      <div class="map-container">
+        <div id="mapid"></div>
       </div>
-    </section>
-    <section class='create-map-form'>
-
-    </section>
-    <section class="locations-list">
-
-    </section>
-  </main>
-</body>
-
+      <section class="delete-map-section">
+        <div class="delete-map-container">
+          <form id="delete-map-form">
+            <button type="submit" id="delete-map" class="btn btn-danger">
+              Delete Map
+            </button>
+          </form>
+        </div>
+      </section>
+      <section class="create-map-form"></section>
+      <section class="locations-list"></section>
+    </main>
+  </body>
 </html>

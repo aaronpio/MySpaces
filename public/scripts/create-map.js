@@ -1,91 +1,92 @@
 $(() => {
+  const createNewBlankMap = mymap => {
+    L.tileLayer(
+      "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
+      {
+        attribution:
+          'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: "mapbox/streets-v11",
+        accessToken:
+          "pk.eyJ1IjoiYWFyb25tYXBib3giLCJhIjoiY2swaTcxYzhiMGFjZjNjcDdhbTAwamdjdCJ9.VWSP7Q-2MxofHRFWUZFyQA"
+      }
+    ).addTo(mymap);
+  };
 
-  const createNewBlankMap = (mymap) => {
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox/streets-v11',
-      accessToken: 'pk.eyJ1IjoiYWFyb25tYXBib3giLCJhIjoiY2swaTcxYzhiMGFjZjNjcDdhbTAwamdjdCJ9.VWSP7Q-2MxofHRFWUZFyQA'
-    }).addTo(mymap)
-  }
-
-  const escape = function (str) {
+  const escape = function(str) {
     let div = document.createElement("div");
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   };
 
   const saveMapToDatabase = (data, callback) => {
-
     $.ajax({
       method: "POST",
       url: "/api/maps",
       data
     })
-      .done(function (mapID) {
-        console.log('Sent data for map name: ', mapID)
+      .done(function(mapID) {
+        console.log("Sent data for map name: ", mapID);
         callback(mapID);
       })
-      .fail(function (error) {
-        console.log('Error: ' + error)
+      .fail(function(error) {
+        console.log("Error: " + error);
       })
-      .always(function () {
-        console.log('Map request completed')
-      })
-
-  }
+      .always(function() {
+        console.log("Map request completed");
+      });
+  };
 
   const saveLocationToDatabase = (data, map_id) => {
     $.ajax({
-      method: 'POST',
-      url: '/api/locations',
+      method: "POST",
+      url: "/api/locations",
       data: { ...data, map_id }
     })
-      .done(function (res) {
-        console.log('Sent data for location', res)
+      .done(function(res) {
+        console.log("Sent data for location", res);
       })
-      .fail(function (error) {
-        console.log('Error: ' + error)
+      .fail(function(error) {
+        console.log("Error: " + error);
       })
-      .always(function () {
-        console.log('Location request completed')
-      })
-  }
+      .always(function() {
+        console.log("Location request completed");
+      });
+  };
 
   const disableSaveDelete = () => {
-    $('#delete-map').prop('disabled', true)
-    $('#save-map').prop('disabled', true)
-  }
+    $("#delete-map").prop("disabled", true);
+    $("#save-map").prop("disabled", true);
+  };
 
   const enableSaveDelete = () => {
-    $('#delete-map').prop('disabled', false)
-    $('#save-map').prop('disabled', false)
-  }
+    $("#delete-map").prop("disabled", false);
+    $("#save-map").prop("disabled", false);
+  };
 
   const emptyMarkerArrays = () => {
     arrayOfLatLng = [];
     leafletMarkerObjects = [];
     markers = [];
-  }
+  };
 
   const secondDeletePressOrCancel = () => {
-    $('.warning').remove();
-    $('#cancel-delete').remove()
-    $('.save-delete-map').css('justify-content', 'space-between')
-    $('.save-map-container').toggle()
-    mymap.on('click', onMapClick)
-  }
+    $(".warning").remove();
+    $("#cancel-delete").remove();
+    $(".save-delete-map").css("justify-content", "space-between");
+    $(".save-map-container").toggle();
+    mymap.on("click", onMapClick);
+  };
 
   const secondSavePressOrCancel = () => {
-    $('.delete-map-container').toggle()
-    $('#cancel-save').remove()
-    $('.save-delete-map').css('justify-content', 'space-between')
-    $(".create-map-form").empty()
-    mymap.on('click', onMapClick)
-  }
+    $(".delete-map-container").toggle();
+    $("#cancel-save").remove();
+    $(".save-delete-map").css("justify-content", "space-between");
+    $(".create-map-form").empty();
+    mymap.on("click", onMapClick);
+  };
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
   let arrayOfLatLng = [];
   let leafletMarkerObjects = [];
@@ -95,31 +96,29 @@ $(() => {
 
   createNewBlankMap(mymap);
 
-  const onMapClick = (e) => {
-
+  const onMapClick = e => {
     disableSaveDelete();
 
     const marker = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
 
-    const keepMarkerInjection =
-      `
+    const keepMarkerInjection = `
       <article id="yes-no-keep-marker">
       <h5>Want to keep this marker?</h5>
-      <h6>Latitude: ${e.latlng.lat.toFixed(4)}, Longitude: ${e.latlng.lng.toFixed(4)}</h6>
+      <h6>Latitude: ${e.latlng.lat.toFixed(
+        4
+      )}, Longitude: ${e.latlng.lng.toFixed(4)}</h6>
       <button type="button" id="yes-marker" class="btn btn-primary">Yes!</button>
       <button type="button" id="no-marker" class="btn btn-danger">  No  </button>
-      </article>`
+      </article>`;
 
-    $(".create-map-form").append(keepMarkerInjection)
+    $(".create-map-form").append(keepMarkerInjection);
 
-    mymap.off('click', onMapClick);
+    mymap.off("click", onMapClick);
 
     //--------------------------------------------------------------
     //If click for marker location is accepted (User clicks 'YES' button)
     $("#yes-marker").click(() => {
-
-      const formInjection =
-        `
+      const formInjection = `
       <article id="marker-form">
       <input class="form-control" type="text" name="title" placeholder="The name of your space">
 
@@ -128,30 +127,47 @@ $(() => {
       <input class="form-control" type="text" name="image_url" placeholder="An Image URL you'd like to share of the space">
       <button type="button" id="submit-marker" class="btn btn-primary">Submit Marker</button>
       <button type="button" id="cancel-marker" class="btn btn-basic"> Cancel </button>
-      </article>`
+      </article>`;
 
-      $("#yes-no-keep-marker").remove()
-      $(".create-map-form").append(formInjection)
+      $("#yes-no-keep-marker").remove();
+      $(".create-map-form").append(formInjection);
 
       //If 'CANCEL' button is Pressed - Removes form/marker
       $("#cancel-marker").click(() => {
-        mymap.on('click', onMapClick)
-        $("#marker-form").remove()
-        mymap.removeLayer(marker)
+        mymap.on("click", onMapClick);
+        $("#marker-form").remove();
+        mymap.removeLayer(marker);
 
         enableSaveDelete();
-      })
+      });
 
       //If 'SUBMIT' button is Pressed
-      $('#submit-marker').click(() => {
-        const markerTitle = escape($('#marker-form').find('input[name="title"]').val())
-        const markerDescription = escape($('#marker-form').find('textarea[name="description"]').val())
-        const markerImageURL = escape($('#marker-form').find('input[name="image_url"]').val())
+      $("#submit-marker").click(() => {
+        const markerTitle = escape(
+          $("#marker-form")
+            .find('input[name="title"]')
+            .val()
+        );
+        const markerDescription = escape(
+          $("#marker-form")
+            .find('textarea[name="description"]')
+            .val()
+        );
+        const markerImageURL = escape(
+          $("#marker-form")
+            .find('input[name="image_url"]')
+            .val()
+        );
 
-        mymap.on('click', onMapClick)
-        $("#marker-form").remove()
+        mymap.on("click", onMapClick);
+        $("#marker-form").remove();
 
-        marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}<br> <img src="${markerImageURL}" height="100px" width="100px"/>`, { width: 1 }).openPopup();
+        marker
+          .bindPopup(
+            `<b>${markerTitle}</b><br>${markerDescription}<br> <img src="${markerImageURL}" height="100px" width="100px"/>`,
+            { width: 1 }
+          )
+          .openPopup();
 
         markers.push({
           longitude: e.latlng.lng,
@@ -159,67 +175,66 @@ $(() => {
           title: markerTitle,
           description: markerDescription,
           image_url: markerImageURL
-        })
+        });
 
-        leafletMarkerObjects.push(marker)
+        leafletMarkerObjects.push(marker);
 
-        arrayOfLatLng.push([e.latlng.lat, e.latlng.lng])
+        arrayOfLatLng.push([e.latlng.lat, e.latlng.lng]);
         if (arrayOfLatLng.length > 1) {
           mymap.fitBounds(arrayOfLatLng);
         }
 
         enableSaveDelete();
-      })
-
-    })
+      });
+    });
     //--------------------------------------------------------------
 
     //--------------------------------------------------------------
     //If 'NO' Button is Pressed - Removes form/marker
     $("#no-marker").click(() => {
-      mymap.on('click', onMapClick)
-      $("#yes-no-keep-marker").remove()
-      mymap.removeLayer(marker)
-      $('#delete-map').prop('disabled', false)
-      $('#save-map').prop('disabled', false)
-    })
+      mymap.on("click", onMapClick);
+      $("#yes-no-keep-marker").remove();
+      mymap.removeLayer(marker);
+      $("#delete-map").prop("disabled", false);
+      $("#save-map").prop("disabled", false);
+    });
     //--------------------------------------------------------------
-  }
+  };
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   //Save Map and Delete Map buttons
-
 
   //----------------------------------------------------
   //Delete button
   let deleteClickCounter = 0;
 
   $("#delete-map").click(() => {
-
-    mymap.off('click', onMapClick);
+    mymap.off("click", onMapClick);
 
     if (deleteClickCounter % 2 === 0) {
-      $('.save-map-container').toggle()
-      $('.save-delete-map')
-        .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
-        .css('justify-content', 'flex-end')
-        .append('<button id="cancel-delete" type="button" class="btn">Cancel</button>')
+      $(".save-map-container").toggle();
+      $(".save-delete-map")
+        .prepend(
+          '<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>'
+        )
+        .css("justify-content", "flex-end")
+        .append(
+          '<button id="cancel-delete" type="button" class="btn">Cancel</button>'
+        );
 
-      $('#cancel-delete').click(() => {
+      $("#cancel-delete").click(() => {
         secondDeletePressOrCancel();
-        deleteClickCounter++
-      })
-
+        deleteClickCounter++;
+      });
     } else {
-      leafletMarkerObjects.forEach(marker => mymap.removeLayer(marker))
-      mymap.setView([45.5017, -73.5673], 9)
+      leafletMarkerObjects.forEach(marker => mymap.removeLayer(marker));
+      mymap.setView([45.5017, -73.5673], 9);
       secondDeletePressOrCancel();
       emptyMarkerArrays();
     }
-    return deleteClickCounter++
-  })
+    return deleteClickCounter++;
+  });
 
   //----------------------------------------------------
   //Save button
@@ -228,50 +243,45 @@ $(() => {
   const mapNameFormInjection = `
   <input class="form-control" id="map-name-input" type="text" name="map-name" placeholder="The name of your map">
   <p id="save-are-you-sure"> Is the map to your liking? Saved maps can be edited later as well!</p>
-  `
+  `;
 
   $("#save-map").click(() => {
-
-    mymap.off('click', onMapClick);
+    mymap.off("click", onMapClick);
 
     if (saveClickCounter % 2 === 0) {
-      $('.delete-map-container').toggle()
+      $(".delete-map-container").toggle();
 
-      $('.save-delete-map')
-        .append('<button id="cancel-save" type="button" class="btn">Cancel</button>')
-        .css('justify-content', 'flex-start')
+      $(".save-delete-map")
+        .append(
+          '<button id="cancel-save" type="button" class="btn">Cancel</button>'
+        )
+        .css("justify-content", "flex-start");
 
-      $(".create-map-form").append(mapNameFormInjection)
+      $(".create-map-form").append(mapNameFormInjection);
 
-      $('#cancel-save').click(() => {
+      $("#cancel-save").click(() => {
         secondSavePressOrCancel();
-        saveClickCounter++
-      })
-
+        saveClickCounter++;
+      });
     } else {
-      const mapName = escape($('#map-name-input').val())
+      const mapName = escape($("#map-name-input").val());
 
-      saveMapToDatabase({ mapName }, (mapID) => {
+      saveMapToDatabase({ mapName }, mapID => {
         markers.forEach(marker => {
-          saveLocationToDatabase(marker, mapID)
-        })
+          saveLocationToDatabase(marker, mapID);
+        });
 
         setTimeout(() => {
-          window.location.href = `http://localhost:8080/maps/${mapID}`
-        }, 5)
-      })
+          window.location.href = `http://localhost:8080/maps/${mapID}`;
+        }, 5);
+      });
     }
-    return saveClickCounter++
-  })
+    return saveClickCounter++;
+  });
 
   //----------------------------------------------------
 
-
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-
-  mymap.on('click', onMapClick);
+  mymap.on("click", onMapClick);
 });
-
-
-

@@ -7,10 +7,10 @@ $(() => {
     const $maps = maps.map(map => {
       return $(`<li>
         <a href="/maps/${map.id}">${map.name}</a>
-      </li>`)
-    })
+      </li>`);
+    });
     $("#my-maps").append($maps);
-  })
+  });
 
   $.ajax({
     url: `/api/favorites`
@@ -19,8 +19,8 @@ $(() => {
     const $favorites = favorites.map(favorite => {
       return $(`<li>
         <a href="/maps/${favorite.map_id}">${favorite.name}</a>
-      </li>`)
-    })
+      </li>`);
+    });
     $("#favorite-maps").append($favorites);
-  })
-})
+  });
+});

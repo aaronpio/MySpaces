@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>My Profile - MySpaces</title>
+    <%- include('./partials/_dependencies') %>
+    <script src="/scripts/profile.js"></script>
+  </head>
 
-<head>
-  <title>My Profile - MySpaces</title>
-  <%- include('./partials/_dependencies') %>
-  <script src="/scripts/profile.js"></script>
-</head>
+  <body>
+    <%- include('./partials/_nav') %>
+    <main>
+      <h1><%= user.name %>'s profile</h1>
 
-<body>
-  <%- include('./partials/_nav') %>
-  <main>
-    <h1><%= user.name %>'s profile</h1>
+      <h2>My maps</h2>
+      <ol id="my-maps"></ol>
 
-    <h2>My maps</h2>
-    <ol id="my-maps"></ol>
-
-    <h2>Favorite maps</h2>
-    <ol id="favorite-maps"></ol>
-  </main>
-</body>
-
+      <h2>Favorite maps</h2>
+      <ol id="favorite-maps"></ol>
+    </main>
+  </body>
 </html>
