@@ -15,7 +15,7 @@ $(() => {
 
   const url = document.location.href;
   const urlParts = url.split("/");
-  const mapID = urlParts[urlParts.length - 1];
+  const mapID = parseInt(urlParts[urlParts.length - 1], 10);
 
   const $favBtn = $(`
    <a href="#" style="margin-right: 8px;" class="btn btn-outline-warning">Add to favorites</a>`);
@@ -80,9 +80,11 @@ $(() => {
   };
 
   const renderLocations = locs => {
+    const latlngs = [];
     const markers = [];
     for (let [_, loc] of locs) {
       const marker = L.marker([loc.latitude, loc.longitude]);
+      const latlng = [loc.latitude, loc.longitude]
       marker.addTo(mymap);
       marker.bindPopup(
         `<b>${loc.title}</b>
@@ -91,11 +93,11 @@ $(() => {
         { width: 100 }
       );
       createLocationCard(loc);
-      markers.push(marker);
+      markers.push(marker)
+      latlngs.push(latlng);
     }
     $(".edit-form").toggle();
-    //toggleEditFormOn();
-    mymap.fitBounds(markers);
+    mymap.fitBounds(latlngs);
   };
 
   $.ajax({
@@ -111,7 +113,7 @@ $(() => {
 
   //--------------------------------------------
 
-  const escape = function(str) {
+  const escape = function (str) {
     let div = document.createElement("div");
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
@@ -123,13 +125,13 @@ $(() => {
       url: "/api/locations",
       data: { ...data, mapID }
     })
-      .done(function(result) {
+      .done(function (result) {
         console.log("Sent data for location", result);
       })
-      .fail(function(error) {
+      .fail(function (error) {
         console.log("Error: " + error);
       })
-      .always(function() {
+      .always(function () {
         console.log("Location request completed");
       });
   };
@@ -161,8 +163,8 @@ $(() => {
       <article id="yes-no-keep-marker">
       <h5>Want to keep this marker?</h5>
       <h6>Latitude: ${e.latlng.lat.toFixed(
-        4
-      )}, Longitude: ${e.latlng.lng.toFixed(4)}</h6>
+      4
+    )}, Longitude: ${e.latlng.lng.toFixed(4)}</h6>
       <button type="button" id="yes-marker" class="btn btn-primary">Yes!</button>
       <button type="button" id="no-marker" class="btn btn-danger">  No  </button>
       </article>`;
@@ -234,14 +236,15 @@ $(() => {
           title: markerTitle
         };
 
-        console.log("LOCATION: ", location);
         $.ajax({ url: "/api/locations", method: "POST", data: location }).done(
           response => {
             console.log("RESPONSE:", response);
             const locationID = response[0].id;
-            locations.set(locationID, { locationID, ...location });
+            locations.set(locationID, location);
             renderLocations(locations);
-            enableDelete();
+            //enableDelete();
+            window.location.reload();
+            //window.location.href = `http://localhost:8080/maps/${mapID}`;
           }
         );
       });
@@ -297,7 +300,7 @@ $(() => {
   //-----------------------------------
   //Location Card - EDIT button
 
-  $("body").on("click", ".edit-location", function(e) {
+  $("body").on("click", ".edit-location", function (e) {
     e.preventDefault();
     $(this)
       .parent()
@@ -310,18 +313,18 @@ $(() => {
   //-----------------------------------
   //Location Card - DELETE button
 
-  $("body").on("click", ".delete-location", function(e) {
+  $("body").on("click", ".delete-location", function (e) {
     // e.preventDefault();
     const locationID = $(this).data("id");
     $.ajax({ url: `/api/locations/${locationID}/delete`, method: "POST" }).done(
       res => {
-        delete locations[locationID];
+        locations.delete(locationID)
         renderLocations(locations);
       }
     );
   });
 
-  $("body").on("click", ".edit-cancel", function(e) {
+  $("body").on("click", ".edit-cancel", function (e) {
     e.preventDefault();
     $(this)
       .parent()
