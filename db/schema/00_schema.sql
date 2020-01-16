@@ -33,7 +33,7 @@ CREATE TABLE locations
   description TEXT,
   longitude DOUBLE PRECISION NOT NULL,
   latitude DOUBLE PRECISION NOT NULL,
-  image_url VARCHAR(255),
+  image_url TEXT,
   map_id INTEGER REFERENCES maps ON DELETE CASCADE,
   owner_id INTEGER REFERENCES users ON DELETE CASCADE
 );

@@ -127,11 +127,7 @@ $(() => {
       <article id="marker-form">
       <input class="form-control" type="text" name="title" placeholder="The name of your space">
 
-      <textarea class="form-control" rows="3" name="description" placeholder="Short and sweet let arrayOfLatLng = [];
-      let leafletMarkerObjects = [];
-      //let markers = []; arrayOfLatLng = [];
-      let leafletMarkerObjects = [];
-      //let markers = [];ription of your space"></textarea>
+      <textarea class="form-control" rows="3" name="description" placeholder="Short and sweet description of your space"></textarea>
 
       <input class="form-control" type="text" name="image_url" placeholder="An Image URL you'd like to share of the space">
       <button type="button" id="submit-marker" class="btn btn-primary">Submit Marker</button>
