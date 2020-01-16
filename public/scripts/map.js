@@ -12,6 +12,25 @@ $(() => {
   const urlParts = url.split("/");
   const mapID = urlParts[urlParts.length - 1];
 
+  const $favBtn = $(`
+   <a href="#" style="margin-right: 8px;" class="btn btn-outline-warning">Add to favorites</a>`);
+
+  $favBtn.click(e => {
+    $.ajax({
+      url: `/api/favorites/${mapID}/toggle`,
+      method: "POST"
+    }).done(() => {
+      $favBtn.toggleClass("btn-outline-warning");
+      $favBtn.toggleClass("btn-outline-danger");
+      $favBtn.hasClass("btn-outline-warning")
+        ? $favBtn.text("Add to favorites")
+        : $favBtn.text("Remove from favorites");
+    });
+  });
+
+  $(".delete-map-section").prepend($favBtn)
+
+
   const locations = new Map();
 
   const createLocationCard = (location) => {
