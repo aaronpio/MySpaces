@@ -41,8 +41,11 @@ $(() => {
       url: '/api/locations',
       data: { ...data, mapID }
     })
-      .done(function (result) {
-        console.log('Sent data for location', result)
+      .done(function (res) {
+        //window.location.href = 'http://localhost:8080/'
+        //window.location.href = result.redirect("/");
+        // //window.location.href = "localhost:8080/";
+        console.log('Sent data for location', res)
       })
       .fail(function (error) {
         console.log('Error: ' + error)
@@ -255,12 +258,11 @@ $(() => {
         markers.forEach(marker => {
           saveLocationToDatabase(marker, mapID)
         })
-        emptyMarkerArrays();
-      })
 
-      leafletMarkerObjects.forEach(marker => mymap.removeLayer(marker))
-      mymap.setView([45.5017, -73.5673], 9)
-      secondSavePressOrCancel();
+        setTimeout(() => {
+          window.location.href = `http://localhost:8080/maps/${mapID}`
+        }, 0)
+      })
     }
     return saveClickCounter++
   })

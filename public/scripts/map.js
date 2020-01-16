@@ -86,8 +86,6 @@ $(() => {
   const cancelDeletePress = () => {
     $('.warning').remove();
     $('#cancel-delete').remove()
-    $('.save-delete-map').css('justify-content', 'space-between')
-    $('.save-map-container').toggle()
     mymap.on('click', onMapClick)
   }
 
@@ -206,6 +204,8 @@ $(() => {
   //----------------------------------------------------
   //Delete button
   let deleteClickCounter = 0;
+  $('.save-delete-map')
+    .css('justify-content', 'flex-end')
 
   $("#delete-map").click((e) => {
 
@@ -213,11 +213,10 @@ $(() => {
 
     if (deleteClickCounter % 2 === 0) {
       e.preventDefault()
-      $('.save-map-container').toggle()
+
       $('.save-delete-map')
-        .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
-        .css('justify-content', 'flex-end')
         .append('<button id="cancel-delete" type="button" class="btn">Cancel</button>')
+        .prepend('<p class="warning"><b>The map and markers will forever be lost in time, like tears in the rain.<b></p>')
 
       $("#delete-map-form").attr('method', 'POST')
       $("#delete-map-form").attr('action', `/maps/${mapID}/delete`)
@@ -234,49 +233,7 @@ $(() => {
     deleteClickCounter++
   })
 
-  //----------------------------------------------------
-  //Save button
-  let updateClickCounter = 0;
-
-  const mapNameFormInjection = `
-  <p id="save-are-you-sure"> Is the map to your liking? Saved maps can be edited later as well!</p>
-  `
-
-  $("#update-map").click((e) => {
-    console.log(arrayOfLocations)
-
-    mymap.off('click', onMapClick);
-
-    if (updateClickCounter % 2 === 0) {
-      e.preventDefault()
-      $('.delete-map-container').toggle()
-
-      $('.save-delete-map')
-        .append('<button id="cancel-save" type="button" class="btn">Cancel</button>')
-        .css('justify-content', 'flex-start')
-
-      $(".create-map-form").append(mapNameFormInjection)
-
-      $('#cancel-save').click(() => {
-        updateSavePress();
-
-        updateClickCounter++
-      })
-    } else {
-      //deleteAllLocationsForMapId()
-
-      arrayOfLocations.forEach((location) => {
-        saveLocationToDatabase(location, mapID)
-      })
-    }
-    updateClickCounter++
-  })
-
-  //----------------------------------------------------
-
-
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
   mymap.on('click', onMapClick);
 })
