@@ -14,8 +14,8 @@
     flex-direction: row;
     justify-items: flex-start;
     justify-content: flex-start;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: 50px;
+    margin-bottom: 5px;
     height: 176px;
     width: 1000px;
     border-radius: 15px;
@@ -48,20 +48,25 @@
       }
     }
 
-    #card-buttons{
-      display: flex;
-      flex-direction: column;
-      justify-items: flex-end;
-      justify-content: flex-end;
+  }
 
-      #delete-location {
-        width: 100px;
-      }
+  .card-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 1000px;
 
-      #edit-location {
-        width: 100px;
+    .edit-form {
+      width: 500px;
+    }
 
-      }
+    .delete-location {
+      width: 100px;
+    }
+
+    .edit-location {
+      width: 100px;
+
     }
   }
 }
@@ -95,6 +100,11 @@
     zoom: 70%;
     -moz-transform: scale(0.7);
   }
+
+  .card-form {
+    zoom: 70%;
+    -moz-transform: scale(0.70);
+  }
 }
 
 @media only screen and (max-width: 1000px) {
@@ -103,11 +113,21 @@
     zoom: 60%;
     -moz-transform: scale(0.60);
   }
+
+  .card-form {
+    zoom: 60%;
+    -moz-transform: scale(0.60);
+  }
 }
 
 @media only screen and (max-width: 800px) {
 
   .location-card {
+    zoom: 50%;
+    -moz-transform: scale(0.50);
+  }
+
+  .card-buttons {
     zoom: 50%;
     -moz-transform: scale(0.50);
   }

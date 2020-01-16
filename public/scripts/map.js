@@ -23,18 +23,29 @@ $(() => {
       <div id="card-text">
         <h4>${location.title}</h4>
         <p>${location.description}</p>
-        </div>
-      <div id="card-buttons">
-        <form id="edit-location-form">
-        <input type="hidden" id="edit-location-input" value="${location.id}">
-          <button id="edit-location" type="submit" class="btn btn-outline-warning">Edit</button>
-        </form>
-        <form id="id="delete-location-form">
-          <input type="hidden" id="delete-location-input" value="${location.id}">
-          <button id="delete-location" type="submit" class="btn btn-outline-danger">Delete</button>
-        </form>
-      <div>
+      </div>
+
     </article>
+
+    <form class="card-form">
+      <input type="hidden" name="location-input" id="location-input" value="${location.id}">
+
+      <article class="edit-form">
+        <input class="form-control" type="text" name="title" placeholder="${location.title}">
+
+        <textarea class="form-control" rows="3" name="description" placeholder="${location.description}"></textarea>
+
+        <input class="form-control" type="text" name="image_url" placeholder="${location.image_url}">
+        <button type="submit" class="btn btn-primary edit-submit">Submit Changes</button>
+        <button type="submit" class="btn btn-basic edit-cancel"> Cancel </button>
+      </article>
+
+      <div>
+        <button type="submit" class="btn btn-outline-warning edit-location">Edit</button>
+        <button method="POST" action="/api/locations/${location.id}/delete" type="submit" class="btn btn-outline-danger delete-location">Delete</button>
+      </div>
+
+    </form>
       `;
 
     $(".locations-list").append($location)
@@ -51,6 +62,8 @@ $(() => {
       createLocationCard(loc);
       markers.push(marker)
     }
+    $(".edit-form").toggle()
+    //toggleEditFormOn();
     mymap.fitBounds(markers)
   }
 
@@ -107,7 +120,6 @@ $(() => {
 
   //--------------------------------------------
 
-  $()
 
   const onMapClick = (e) => {
 
@@ -238,6 +250,33 @@ $(() => {
   })
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+  //-----------------------------------
+  //Location Card - EDIT button
+
+  $("body").on('click', ".edit-location", function (e) {
+    e.preventDefault();
+    $(this).parent().parent().children(".edit-form").toggle()
+    console.log('edit hi')
+
+  })
+
+  //-----------------------------------
+  //Location Card - DELETE button
+
+  $("body").on('click', ".delete-location", (e) => {
+    e.preventDefault();
+    console.log('delete yo')
+
+  })
+
+  //-----------------------------------------
+
+  $("body").on('click', ".edit-cancel", function (e) {
+    e.preventDefault();
+    $(this).parent().parent().children(".edit-form").toggle()
+
+  })
 
   mymap.on('click', onMapClick);
 })
