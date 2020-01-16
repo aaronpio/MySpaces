@@ -12,22 +12,28 @@ $(() => {
   const urlParts = url.split("/");
   const mapID = urlParts[urlParts.length - 1];
 
-  const populateLocationsList = (location) => {
+  const createLocationCard = (location) => {
 
     const $location =
       `
     <article class="location-card">
-    <img src="${location.image_url}" width="200px" height="170px"><img>
-    <div>
-      <h4>${location.title}</h4>
-      <p>${location.description}</p>
+      <img src="${location.image_url}" width="200px" height="170px"><img>
+      <div id="card-text">
+        <h4>${location.title}</h4>
+        <p>${location.description}</p>
+        </div>
+      <div id="card-buttons">
+        <form id="edit-location-form">
+        <input type="hidden" id="location_id" value="${location.id}">
+          <button id="edit-location" type="submit" class="btn btn-outline-warning">Edit</button>
+        </form>
+        <form id="id="delete-location-form">
+          <input type="hidden" id="location_id" value="${location.id}">
+          <button id="delete-location" type="submit" class="btn btn-outline-danger">Delete</button>
+        </form>
       <div>
-        <button type="button" class="btn btn-outline-warning">Edit</button>
-        <button type="button" class="btn btn-outline-danger">Delete</button>
-      <div>
-    </div>
     </article>
-    `
+      `;
 
     $(".locations-list").append($location)
   }
@@ -41,7 +47,7 @@ $(() => {
       marker.bindPopup(`<b>${location.title}</b>
                         <br>${location.description}
                         <br><img src="${location.image_url}" height="100px" width="100px"/>`, { width: 100 })
-      populateLocationsList(location);
+      createLocationCard(location);
       return marker
     })
     //mymap.fitBounds(markers)
@@ -73,12 +79,12 @@ $(() => {
       })
   }
 
-  const disableSaveDelete = () => {
+  const disableDelete = () => {
     $('#delete-map').prop('disabled', true)
     $('#save-map').prop('disabled', true)
   }
 
-  const enableSaveDelete = () => {
+  const enableDelete = () => {
     $('#delete-map').prop('disabled', false)
     $('#save-map').prop('disabled', false)
   }
@@ -89,23 +95,13 @@ $(() => {
     mymap.on('click', onMapClick)
   }
 
-  const updateSavePress = () => {
-    $('.delete-map-container').toggle()
-    $('#cancel-save').remove()
-    $('.save-delete-map').css('justify-content', 'space-between')
-    $(".create-map-form").empty()
-    mymap.on('click', onMapClick)
-  }
-
   //--------------------------------------------
 
-  let arrayOfLatLng = [];
-  let leafletMarkerObjects = [];
-  //let markers = [];
+  $()
 
   const onMapClick = (e) => {
 
-    disableSaveDelete();
+    disableDelete();
 
     const marker = new L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
 
@@ -131,7 +127,11 @@ $(() => {
       <article id="marker-form">
       <input class="form-control" type="text" name="title" placeholder="The name of your space">
 
-      <textarea class="form-control" rows="3" name="description" placeholder="Short and sweet description of your space"></textarea>
+      <textarea class="form-control" rows="3" name="description" placeholder="Short and sweet let arrayOfLatLng = [];
+      let leafletMarkerObjects = [];
+      //let markers = []; arrayOfLatLng = [];
+      let leafletMarkerObjects = [];
+      //let markers = [];ription of your space"></textarea>
 
       <input class="form-control" type="text" name="image_url" placeholder="An Image URL you'd like to share of the space">
       <button type="button" id="submit-marker" class="btn btn-primary">Submit Marker</button>
@@ -147,7 +147,7 @@ $(() => {
         $("#marker-form").remove()
         mymap.removeLayer(marker)
 
-        enableSaveDelete();
+        enableDelete();
       })
 
       //If 'SUBMIT' button is Pressed
@@ -177,7 +177,7 @@ $(() => {
           mymap.fitBounds(arrayOfLatLng);
         }
 
-        enableSaveDelete();
+        enableDelete();
       })
 
     })
@@ -198,7 +198,7 @@ $(() => {
 
 
   //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-  //Save Map and Delete Map buttons
+  //Delete Map buttons
 
 
   //----------------------------------------------------

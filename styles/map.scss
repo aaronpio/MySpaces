@@ -17,44 +17,60 @@
     margin-top: 25px;
     margin-bottom: 25px;
     height: 176px;
-    width: 75vw;
-    max-width: 1000px;
+    width: 1000px;
     border-radius: 15px;
     border-style: solid;
     border-color: lightgray;
     word-wrap: break-word;
-  }
 
-  div{
-    margin: 10px;
-    width: 57vw;
-    max-width: 775px;
-
-    h4 {
-      margin: 5px auto;
-      border-bottom: solid;
-      border-color: lightgray;
+    img {
+      border-radius: 10px;
     }
 
-    p {
-      margin: 5px auto;
-      height: 70px;
+
+
+    #card-text {
+      z-index: 1;
+      margin: 10px;
+      width: 800px;
+      max-width: 775px;
+
+      h4 {
+        margin: 5px auto;
+        border-bottom: solid;
+        border-color: lightgray;
+        border-color: lightgray;
+      }
+
+      p {
+        margin: 5px auto;
+        height: 60px;
+      }
     }
 
-    div {
+    #card-buttons{
       display: flex;
-      flex-direction: row;
-      justify-items: space-between;
-      justify-content: space-between;
-      align-content: space-between;
-      align-items: space-between;
+      flex-direction: column;
+      justify-items: flex-end;
+      justify-content: flex-end;
+      align-content: flex-end;
+      align-items: flex-end;
 
-      button {
-        width: 75px;
-        margin-right: 10px;
+
+      #delete-location {
+        width: 100px;
+      }
+
+      #edit-location {
+        width: 100px;
+
       }
     }
   }
+}
+
+.location-card:hover {
+  box-shadow: 3px 3px 3px 3px #0005;
 }
 
 .delete-map-section {
@@ -74,3 +90,30 @@
   }
 
 }
+
+
+@media only screen and (max-width: 1400px) {
+
+  .location-card {
+    zoom: 70%;
+    -moz-transform: scale(0.7);
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+
+  .location-card {
+    zoom: 60%;
+    -moz-transform: scale(0.60);
+  }
+}
+
+@media only screen and (max-width: 800px) {
+
+  .location-card {
+    zoom: 50%;
+    -moz-transform: scale(0.50);
+  }
+}
+
+

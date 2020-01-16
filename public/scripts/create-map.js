@@ -42,9 +42,6 @@ $(() => {
       data: { ...data, mapID }
     })
       .done(function (res) {
-        //window.location.href = 'http://localhost:8080/'
-        //window.location.href = result.redirect("/");
-        // //window.location.href = "localhost:8080/";
         console.log('Sent data for location', res)
       })
       .fail(function (error) {
@@ -261,7 +258,7 @@ $(() => {
 
         setTimeout(() => {
           window.location.href = `http://localhost:8080/maps/${mapID}`
-        }, 0)
+        }, 5)
       })
     }
     return saveClickCounter++
