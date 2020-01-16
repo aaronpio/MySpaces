@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId, createNewMap, createNewLocation, addFavorite, getFavoritesForUserId, removeFavorite, isFavorited } = require("../lib/queries.js");
+const { getMapsForUserId, getUserById, getAllUsers, getMapById, getMaps, getLocationsForMapId, createNewMap, createNewLocation, deleteLocationForId, addFavorite, getFavoritesForUserId, removeFavorite, isFavorited } = require("../lib/queries");
 const { execQuery, ifLoggedIn } = require("../server");
 
 // USERS
@@ -21,6 +21,17 @@ router.get("/users/", (req, res) => {
 
 
 // MAPS
+router.post(`/maps/:mapID/update`, (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const mapID = req.params.mapID
+    const sql = updateMapById(mapID)
+    execQuery(sql).then(() => {
+      console.log(`Map with ID: ${mapID} was Updated `)
+      res.render('index')
+    })
+  })
+})
+
 router.get("/maps", async (req, res) => {
   const sql = getMaps();
   execQuery(sql).then(maps => res.json(maps));
@@ -41,6 +52,13 @@ router.post("/maps", async (req, res) => {
 
 
 // LOCATIONS
+router.post("/locations/:id/delete", async (req, res) => {
+  ifLoggedIn(req, res, async (userID) => {
+    const sql = deleteLocationForId(req.params.id)
+    execQuery(sql).then(id => res.json(id))
+  })
+})
+
 router.get("/locations/:mapid", async (req, res) => {
   const sql = getLocationsForMapId(req.params.mapid)
   execQuery(sql).then(locations => res.json(locations))
@@ -56,22 +74,9 @@ router.post("/locations", async (req, res) => {
             description,
             image_url } = req.body
     const sql = createNewLocation(map_id, userID, longitude, latitude, title, description, image_url)
-    execQuery(sql).then(id => {console.log("ID:", id);res.json(id)})
+    execQuery(sql).then(id => res.json(id))
   })
 })
-
-router.post(`/:mapID/update`, (req, res) => {
-  console.log('yoyoyoyoy')
-  ifLoggedIn(req, res, async (userID) => {
-    const mapID = req.params.mapID
-    const sql = updateMapById(mapID)
-    execQuery(sql).then(() => {
-      console.log(`Map with ID: ${mapID} was Updated `)
-      res.render('index')
-    })
-  })
-})
-
 
 // FAVORITES
 router.post("/favorites/:mapid/toggle", async (req, res) => {

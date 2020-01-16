@@ -24,9 +24,7 @@ $(() => {
   }
 
   $.ajax({ url: "/api/favorites" }).done(favorites => {
-    console.log(favorites)
     const isFavorited = favorites.filter(fav => fav.map_id = mapID).length > 0;
-    console.log(isFavorited)
     if (isFavorited) toggleFavBtn($favBtn)
     $(".delete-map-section").prepend($favBtn)
   })
@@ -56,8 +54,6 @@ $(() => {
     </article>
 
     <form class="card-form">
-      <input type="hidden" name="location-input" id="location-input" value="${location.id}">
-
       <article class="edit-form">
         <input class="form-control" type="text" name="title" placeholder="${location.title}">
 
@@ -70,7 +66,7 @@ $(() => {
 
       <div>
         <button type="submit" class="btn btn-outline-warning edit-location">Edit</button>
-        <button method="POST" action="/api/locations/${location.id}/delete" type="submit" class="btn btn-outline-danger delete-location">Delete</button>
+        <button data-id=${location.id} class="btn btn-outline-danger delete-location">Delete</button>
       </div>
 
     </form>
@@ -291,13 +287,16 @@ $(() => {
   //-----------------------------------
   //Location Card - DELETE button
 
-  $("body").on('click', ".delete-location", (e) => {
-    e.preventDefault();
-    console.log('delete yo')
+  $("body").on('click', ".delete-location", function(e) {
+    // e.preventDefault();
+    const locationID = $(this).data("id");
+    $.ajax({ url: `/api/locations/${locationID}/delete`, method: "POST" })
+    .done(res => {
+      delete locations[locationID];
+      renderLocations(locations)
+    })
 
   })
-
-  //-----------------------------------------
 
   $("body").on('click', ".edit-cancel", function (e) {
     e.preventDefault();
