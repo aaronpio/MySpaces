@@ -35,11 +35,11 @@ $(() => {
 
   }
 
-  const saveLocationToDatabase = (data, mapID) => {
+  const saveLocationToDatabase = (data, map_id) => {
     $.ajax({
       method: 'POST',
       url: '/api/locations',
-      data: { ...data, mapID }
+      data: { ...data, map_id }
     })
       .done(function (res) {
         console.log('Sent data for location', res)
@@ -154,11 +154,11 @@ $(() => {
         marker.bindPopup(`<b>${markerTitle}</b><br>${markerDescription}<br> <img src="${markerImageURL}" height="100px" width="100px"/>`, { width: 1 }).openPopup();
 
         markers.push({
-          long: e.latlng.lng,
-          lat: e.latlng.lat,
+          longitude: e.latlng.lng,
+          latitude: e.latlng.lat,
           title: markerTitle,
           description: markerDescription,
-          imageUrl: markerImageURL
+          image_url: markerImageURL
         })
 
         leafletMarkerObjects.push(marker)

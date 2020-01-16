@@ -34,6 +34,7 @@ router.get("/maps/:id", async (req, res) => {
 router.post("/maps", async (req, res) => {
   ifLoggedIn(req, res, async (userID) => {
     const sql = createNewMap(req.body.mapName, userID)
+    console.log(sql)
     execQuery(sql).then(mapID => res.json(mapID[0].id))
   })
 });
@@ -46,8 +47,8 @@ router.get("/locations/:mapid", async (req, res) => {
 })
 
 router.post("/locations", async (req, res) => {
+  console.log("BODY", req.body)
   ifLoggedIn(req, res, async (userID) => {
-    console.log(req.body)
     const { map_id,
             longitude,
             latitude,
@@ -55,8 +56,7 @@ router.post("/locations", async (req, res) => {
             description,
             image_url } = req.body
     const sql = createNewLocation(map_id, userID, longitude, latitude, title, description, image_url)
-    console.log(sql)
-    execQuery(sql).then(id => {console.log(id);res.json(id)})
+    execQuery(sql).then(id => {console.log("ID:", id);res.json(id)})
   })
 })
 
