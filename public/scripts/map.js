@@ -97,7 +97,8 @@ $(() => {
       latlngs.push(latlng);
     }
     $(".edit-form").toggle();
-    mymap.fitBounds(latlngs);
+    mymap.fitBounds(latlngs, { maxZoom: 9 });
+
   };
 
   $.ajax({
@@ -241,10 +242,8 @@ $(() => {
             console.log("RESPONSE:", response);
             const locationID = response[0].id;
             locations.set(locationID, location);
+            $(".locations-list").empty()
             renderLocations(locations);
-            //enableDelete();
-            window.location.reload();
-            //window.location.href = `http://localhost:8080/maps/${mapID}`;
           }
         );
       });
@@ -314,7 +313,7 @@ $(() => {
   //Location Card - DELETE button
 
   $("body").on("click", ".delete-location", function (e) {
-    // e.preventDefault();
+    //e.preventDefault();
     const locationID = $(this).data("id");
     $.ajax({ url: `/api/locations/${locationID}/delete`, method: "POST" }).done(
       res => {
