@@ -64,7 +64,7 @@ $(() => {
         <textarea class="form-control" rows="3" name="description" value="${location.description}"></textarea>
 
         <input class="form-control" type="text" name="image_url" value="${location.image_url}">
-        <button type="submit" class="btn btn-primary edit-submit">Submit Changes</button>
+        <button type="submit" data-locid=${location.id} class="btn btn-primary edit-submit">Submit Changes</button>
         <button type="submit" class="btn btn-basic edit-cancel"> Cancel </button>
       </article>
 
@@ -306,7 +306,11 @@ $(() => {
       .parent()
       .children(".edit-form")
       .toggle();
-    console.log("edit hi");
+
+    $(".card-form").css('justify-content', 'space-between')
+    $(".edit-location").toggle()
+    $(".delete-location").toggle()
+
   });
 
   //-----------------------------------
@@ -318,10 +322,14 @@ $(() => {
     $.ajax({ url: `/api/locations/${locationID}/delete`, method: "POST" }).done(
       res => {
         locations.delete(locationID)
+        $(".locations-list").empty();
         renderLocations(locations);
       }
     );
   });
+
+  //-----------------------------------
+  //Location Card - CANCEL button
 
   $("body").on("click", ".edit-cancel", function (e) {
     e.preventDefault();
@@ -330,7 +338,50 @@ $(() => {
       .parent()
       .children(".edit-form")
       .toggle();
+
+    $(".card-form").css('justify-content', 'flex-end')
+    $(".edit-location").toggle()
+    $(".delete-location").toggle()
+
   });
+
+  //-----------------------------------
+  //Location Card - SUBMIT CHANGES button
+
+  $("body").on("click", ".edit-submit", function (e) {
+    e.preventDefault();
+    const markerTitle = escape(
+      $(".edit-form")
+        .find('input[name="title"]')
+        .val()
+    );
+    const markerDescription = escape(
+      $(".edit-form")
+        .find('textarea[name="description"]')
+        .val()
+    );
+    const markerImageURL = escape(
+      $(".edit-form")
+        .find('input[name="image_url"]')
+        .val()
+    );
+
+    const location = {
+      location_id: $(this).data("locid"),
+      description: markerDescription,
+      image_url: markerImageURL,
+      title: markerTitle
+    };
+
+    console.log(location)
+
+    $.ajax({ url: `/api/locations/${location.location_id}/update`, method: "POST", data: location }).done(
+      response => {
+        window.location.reload();
+      }
+    );
+  });
+
 
   mymap.on("click", onMapClick);
 });

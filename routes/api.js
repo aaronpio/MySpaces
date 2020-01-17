@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
+  updateLocationForId,
   getMapsForUserId,
   getUserById,
   getAllUsers,
@@ -67,6 +68,13 @@ router.post("/maps", async (req, res) => {
 router.post("/locations/:id/delete", async (req, res) => {
   ifLoggedIn(req, res, async userID => {
     const sql = deleteLocationForId(req.params.id);
+    execQuery(sql).then(id => res.json(id));
+  });
+});
+
+router.post("/locations/:id/update", async (req, res) => {
+  ifLoggedIn(req, res, async userID => {
+    const sql = updateLocationForId({ ...req.body });
     execQuery(sql).then(id => res.json(id));
   });
 });
