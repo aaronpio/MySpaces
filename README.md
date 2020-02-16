@@ -6,7 +6,7 @@ A dynamic multi-page website that allows you to collaborate with friends to crea
 
 <figure class="video_container">
   <video controls="true" allowfullscreen="true" poster="path/to/poster_image.png">
-    <source src="public/images/MySpaces.webm" type="video/webm">
+    <source src="./public/images/MySpaces.webm" type="video/webm">
   </video>
 </figure>
 
@@ -16,14 +16,4 @@ Node, Express, PostgreSQL, jQuery, SASS
 
 ## Dependencies
 
-body-parser
-chalk
-cookie-parser
-dotenv 
-ejs
-express
-morgan
-node-sass-middleware
-pg
-pg-native   
-sql-template-strings
+body-parser, chalk, cookie-parser, dotenv, ejs, express, morgan, node-sass-middleware, pg, pg-native, sql-template-strings
