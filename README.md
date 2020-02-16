@@ -3,12 +3,18 @@
 A dynamic multi-page website that allows you to collaborate with friends to create maps - utilizes Leaflet Maps API.
 
 ## The Application in Action!
+
+### Browse Maps
+![Alt Text](https://j.gifs.com/D17DwK.gif)
+
 ### Add points
+![Alt text](https://j.gifs.com/wV8zn8.gif)
 
-<iframe src='//gifs.com/embed/createpoints-nxV0G7' frameborder='0' scrolling='no' width='720px' height='480px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
+### Name Points
+![Alt text](https://j.gifs.com/P7pk64.gif)
 
-![Alt text](https://j.gifs.com/nxV0G7.gif)
-
+### Delete/Edit
+![Alt text](https://j.gifs.com/4QDjYx.gif)
 
 ## Tech Stack
 
