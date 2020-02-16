@@ -4,7 +4,7 @@ A dynamic multi-page website that allows you to collaborate with friends to crea
 
 ## The Application in Action!
 
-![MySpaces Demo](public/images/MySpaces.webm)
+!video[MySpaces Demo](public/images/MySpaces.webm)
 
 ## Tech Stack
 
