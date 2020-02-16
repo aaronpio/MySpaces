@@ -4,10 +4,11 @@ A dynamic multi-page website that allows you to collaborate with friends to crea
 
 ## The Application in Action!
 
-![Alt Text](https://imgur.com/JYE2dMZ)
-![Alt Text](https://i.imgur.com/JYE2dMZ.mp4)
-![Alt Test](https://i.imgur.com/JYE2dMZ.mp4)
-![Alt Test](https://j.gifs.com/QnqlOG.gif)
+<figure class="video_container">
+  <video controls="true" allowfullscreen="true" poster="path/to/poster_image.png">
+    <source src="public/images/MySpaces.webm" type="video/webm">
+  </video>
+</figure>
 
 ## Tech Stack
 
