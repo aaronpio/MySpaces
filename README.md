@@ -3,22 +3,12 @@
 A dynamic multi-page website that allows you to collaborate with friends to create maps - utilizes Leaflet Maps API.
 
 ## The Application in Action!
+### Add points
 
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="public/images/MySpaces.webm">
-    <source src="./public/images/MySpaces.webm" type="video/webm">
-  </video>
-</figure>
+<iframe src='//gifs.com/embed/createpoints-nxV0G7' frameborder='0' scrolling='no' width='720px' height='480px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
 
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="public/images/myspaces.mp4">
-    <source src="./public/images/Mmyspaces.mp4" type="video/mp4">
-  </video>
-</figure>
+![Alt text](https://j.gifs.com/nxV0G7.gif)
 
-![Alt text](public/images/myspaces.mp4)
-![Alt text](https://imgur.com/JYE2dMZ)
-![Alt text](https://i.imgur.com/JYE2dMZ.mp4)
 
 ## Tech Stack
 
