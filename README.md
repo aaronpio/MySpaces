@@ -6,7 +6,8 @@ A dynamic multi-page website that allows you to collaborate with friends to crea
 
 ![Alt Text](https://imgur.com/JYE2dMZ)
 ![Alt Text](https://i.imgur.com/JYE2dMZ.mp4)
-
+![Alt Test](https://i.imgur.com/JYE2dMZ.mp4)
+![Alt Test](https://j.gifs.com/QnqlOG.gif)
 
 ## Tech Stack
 
