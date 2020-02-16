@@ -5,7 +5,7 @@ A dynamic multi-page website that allows you to collaborate with friends to crea
 ## The Application in Action!
 
 <figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="./public/images/MySpaces.webm">
+  <video controls="true" allowfullscreen="true" poster="public/images/MySpaces.webm">
     <source src="./public/images/MySpaces.webm" type="video/webm">
   </video>
 </figure>
